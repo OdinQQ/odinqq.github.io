@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>问题汇总（uniapp）</title>
+    <url>/2022/08/22/%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB-uniapp/</url>
+    <content><![CDATA[<h1 id="问题汇总（uniapp）"><a href="#问题汇总（uniapp）" class="headerlink" title="问题汇总（uniapp）"></a>问题汇总（uniapp）</h1><h2 id="主包与分包"><a href="#主包与分包" class="headerlink" title="主包与分包"></a>主包与分包</h2><p>微信分包问题：主包相当于全局作用域，分包相当于局部作用域。分包可以访问主包。</p>
+<h2 id="启动页"><a href="#启动页" class="headerlink" title="启动页"></a>启动页</h2><p>uni-app 会将 pages.json 配置项中的第一个页面，作为当前工程的首页（启动页）。</p>
+<h2 id="uniapp-打包问题"><a href="#uniapp-打包问题" class="headerlink" title="uniapp 打包问题"></a>uniapp 打包问题</h2><p>打包 H5 时，最终项目包括所有内容。本地网页及相关资源（js、css等文件）必须放在 uni-app 项目的 <code>/hybrid/html</code> 文件夹下。</p>
+<p>打包小程序时，只包含特定内容。</p>
+<h2 id="ref-问题"><a href="#ref-问题" class="headerlink" title="ref 问题"></a>ref 问题</h2><p>uni-app 的 ref 属性不能用在内置组件上面，只能用在自定义组件上面。</p>
+<h2 id="toast-字数"><a href="#toast-字数" class="headerlink" title="toast 字数"></a>toast 字数</h2><p><code>uni.showToast()</code> 有图标时，最多显示7个字符；没有图标时，可以显示更多。</p>
+<h2 id="webview-导航栏问题"><a href="#webview-导航栏问题" class="headerlink" title="webview 导航栏问题"></a>webview 导航栏问题</h2><p>小程序端 web-view 组件一定有原生导航栏，下面一定是全屏的 web-view 组件，navigationStyle: custom 对 web-view 组件无效。</p>
+<p><a href="https://blog.csdn.net/weixin_44461275/article/details/121852424">uniapp兼容ipad平板配置_uniapp开发平板rpx适配_搬砖的前端的博客-CSDN博客</a></p>
+<h2 id="uni-popup-滚动穿透问题"><a href="#uni-popup-滚动穿透问题" class="headerlink" title="uni-popup 滚动穿透问题"></a>uni-popup 滚动穿透问题</h2><p><strong>h5 平台会自动禁止滚动穿透。</strong></p>
+<p><strong>微信小程序、App 平台需要用户特殊处理一下</strong>，可使用 <code>page-meta</code> 组件动态修改页面滚动：popup显示时禁止页面滚动，popup隐藏时允许页面滚动。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">page-meta</span> <span class="attr">:page-style</span>=<span class="string">&quot;&#x27;overflow:&#x27;+(show?&#x27;hidden&#x27;:&#x27;visible&#x27;)&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">page-meta</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>参考资料：<a href="https://uniapp.dcloud.net.cn/component/uniui/uni-popup.html#%E4%BB%8B%E7%BB%8D">uni-app官网</a></p>
+<h2 id="地图选点问题"><a href="#地图选点问题" class="headerlink" title="地图选点问题"></a>地图选点问题</h2><ul>
+<li><p>uni.chooseLocation：跨平台</p>
+</li>
+<li><p>腾讯地图插件：只支持微信小程序</p>
+</li>
+</ul>
+<p><a href="https://blog.csdn.net/weixin_40816738/article/details/122288490">微信小程序之实现地图定位（使用腾讯位置服务插件）</a></p>
+<p>uni.chooseLocation：H5 端使用地图和定位相关，需要在 manifest.json 内配置腾讯或谷歌等三方地图服务商申请的秘钥（key）。</p>
+<h2 id="App-初始化"><a href="#App-初始化" class="headerlink" title="App 初始化"></a>App 初始化</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">    ...<span class="title class_">App</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>必须是 <code>...App</code>，否则会导致应用生命周期不执行。</p>
+]]></content>
+      <categories>
+        <category>uni-app</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>uni-app</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>问题汇总（前端）</title>
+    <url>/2022/08/20/%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB-%E5%89%8D%E7%AB%AF/</url>
+    <content><![CDATA[<h1 id="问题汇总（前端）"><a href="#问题汇总（前端）" class="headerlink" title="问题汇总（前端）"></a>问题汇总（前端）</h1><h2 id="JavaScript-Number-的范围问题"><a href="#JavaScript-Number-的范围问题" class="headerlink" title="JavaScript Number 的范围问题"></a>JavaScript Number 的范围问题</h2><p><strong>后端返回了一个 19 位的数字，超过了 16 位，前端拿到的数据，自动把超出部分转成 0？</strong></p>
+<p>前端：JavaScript 中的数值类型 Number 是一个双精度浮点数（double），它可以表示的最大安全范围是正负 9007199254740991，也就是 2 的 53 次方减一，任何超出安全范围的数字都可能会失去精度。</p>
+<p>后端：Java 中的 Long 范围会大于 JavaScript 中的 Number 范围</p>
+<h2 id="Windows字体缩放"><a href="#Windows字体缩放" class="headerlink" title="Windows字体缩放"></a>Windows字体缩放</h2><p><a href="https://blog.csdn.net/beichen3997/article/details/115518372?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-115518372-blog-126625008.pc_relevant_recovery_v2&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-115518372-blog-126625008.pc_relevant_recovery_v2&utm_relevant_index=1">前端如何解决pc端屏幕显示设置缩放比例对页面布局的影响？_beichen3997的博客-CSDN博客</a></p>
+<h2 id="import问题"><a href="#import问题" class="headerlink" title="@import问题"></a>@import问题</h2><p>css 本身也有 <code>@import</code> 语法，scss 为了区别 css 和 scss 的 import，就加了一条设定——<code>@import url()</code>写法的一律当做 css 的 import 处理，引入  scss 文件，使用 <code>@import &quot;&quot;</code>。</p>
+<h2 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h2><p>前端项目部署的服务器，如 nginx、apache等</p>
+<p><a href="https://blog.csdn.net/afkbcgz/article/details/118148299">JS 中数组使用字符串作为索引值_js数组怎么把索引设置为字符串_xuning_et的博客-CSDN博客</a></p>
+<h2 id="小程序图片"><a href="#小程序图片" class="headerlink" title="小程序图片"></a>小程序图片</h2><p>建议：小程序端图片的宽度设置为 340px</p>
+<h2 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h2><p>forEach函数里不可使用return，返回不了值。因为 forEach 循环不会被 return、braek 中断。</p>
+<h2 id="JS-async-函数"><a href="#JS-async-函数" class="headerlink" title="JS async 函数"></a>JS async 函数</h2><p>async函数一定会返回一个promise对象。如果一个async函数的返回值看起来不是promise，那么它将会被隐式地包装在一个promise中。</p>
+<h2 id="强制下载文件"><a href="#强制下载文件" class="headerlink" title="强制下载文件"></a>强制下载文件</h2><p>让浏览器下载而不是打开文件。</p>
+<p><a href="https://blog.csdn.net/wang121213145/article/details/131122880">https://blog.csdn.net/wang121213145/article/details/131122880</a></p>
+<p>原理：设置响应头为 <code>Content-Disposition: attachment;</code></p>
+<p>方式：</p>
+<ul>
+<li><p>修改服务器配置</p>
+</li>
+<li><p>修改特定接口的响应头</p>
+</li>
+</ul>
+<h2 id="sass版本问题"><a href="#sass版本问题" class="headerlink" title="sass版本问题"></a>sass版本问题</h2><p><a href="https://juejin.cn/post/7041524739591897124">node16+对应的sass环境 - 掘金</a></p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>问题汇总（微信小程序）</title>
+    <url>/2022/09/26/%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/</url>
+    <content><![CDATA[<h1 id="问题汇总（微信小程序）"><a href="#问题汇总（微信小程序）" class="headerlink" title="问题汇总（微信小程序）"></a>问题汇总（微信小程序）</h1><h2 id="自定义指令"><a href="#自定义指令" class="headerlink" title="自定义指令"></a>自定义指令</h2><p>小程序不支持 <code>Vue.directive()</code> 自定义指令</p>
+<h2 id="微信webview字体闪烁问题"><a href="#微信webview字体闪烁问题" class="headerlink" title="微信webview字体闪烁问题"></a>微信webview字体闪烁问题</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    -webkit-text-size-adjust: <span class="number">100%</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="iOS-Date-问题"><a href="#iOS-Date-问题" class="headerlink" title="iOS Date 问题"></a>iOS Date 问题</h2><p>iOS微信小程序 <code>Date.now()</code> 只能处理 “&#x2F;” 分隔的日期。</p>
+<p>参考：<a href="https://blog.csdn.net/qq_40745143/article/details/108142314">https://blog.csdn.net/qq_40745143/article/details/108142314</a></p>
+<h2 id="微信小程序多层-v-for-问题"><a href="#微信小程序多层-v-for-问题" class="headerlink" title="微信小程序多层 v-for 问题"></a>微信小程序多层 v-for 问题</h2><p>当布局中存在多层 <code>v-for</code> 嵌套时，里层的点击事件传值会发生错乱。</p>
+<p>2种解决方法：</p>
+<ol>
+<li>将里层的 v-for 封装成组件</li>
+<li>使用 <code>data-</code> 自定义特性传递参数</li>
+</ol>
+<p>自定义特性</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span></span></span><br><span class="line"><span class="tag">    <span class="attr">v-for</span>=<span class="string">&quot;(item, index) in list&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:data-params</span>=<span class="string">&quot;item&quot;</span></span></span><br><span class="line"><span class="tag">    @<span class="attr">click</span>=<span class="string">&quot;click&quot;</span></span></span><br><span class="line"><span class="tag">&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>js</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title function_">click</span>(<span class="params">e</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> item = e.<span class="property">currentTarget</span>.<span class="property">dataset</span>.<span class="property">params</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="微信小程序隐藏滚动条"><a href="#微信小程序隐藏滚动条" class="headerlink" title="微信小程序隐藏滚动条"></a>微信小程序隐藏滚动条</h2><p><a href="https://blog.csdn.net/qq_61672548/article/details/126013149">https://blog.csdn.net/qq_61672548/article/details/126013149</a></p>
+<h2 id="隐私协议"><a href="#隐私协议" class="headerlink" title="隐私协议"></a>隐私协议</h2><p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/user-privacy/miniprogram-intro.html">小程序用户隐私保护指引内容介绍 | 微信开放文档</a></p>
+]]></content>
+      <categories>
+        <category>微信小程序</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>微信小程序</tag>
+      </tags>
+  </entry>
+</search>
