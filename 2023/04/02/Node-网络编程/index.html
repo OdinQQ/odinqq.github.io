@@ -1,0 +1,425 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Node.js网络编程 | QinのBlog</title><meta name="author" content="qintj"><meta name="copyright" content="qintj"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Node.js网络编程在Web领域，大多数编程语言需要专门的Web服务器容器，如ASP需要IIS服务器，Java需要Tomcat服务器，PHP需要Apache服务器。Node则不需要额外的容器。 Node提供了多个模块：  net：TCP  dgram：UDP  http：HTTP  https：HTTPS   构建TCP服务TCP：传输控制协议。传输层 大多数网络应用是基于TCP搭建的。 创建会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js网络编程">
+<meta property="og:url" content="https://odinqq.github.io/2023/04/02/Node-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="QinのBlog">
+<meta property="og:description" content="Node.js网络编程在Web领域，大多数编程语言需要专门的Web服务器容器，如ASP需要IIS服务器，Java需要Tomcat服务器，PHP需要Apache服务器。Node则不需要额外的容器。 Node提供了多个模块：  net：TCP  dgram：UDP  http：HTTP  https：HTTPS   构建TCP服务TCP：传输控制协议。传输层 大多数网络应用是基于TCP搭建的。 创建会">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://odinqq.github.io/img/avatar.png">
+<meta property="article:published_time" content="2023-04-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-10T00:05:10.463Z">
+<meta property="article:author" content="qintj">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="后端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://odinqq.github.io/img/avatar.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://odinqq.github.io/2023/04/02/Node-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Node.js网络编程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-10 08:05:10'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/default_top_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="QinのBlog"><img class="site-icon" src="/favicon.ico"/><span class="site-name">QinのBlog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Node.js网络编程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-04-01T16:00:00.000Z" title="发表于 2023-04-02 00:00:00">2023-04-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-10T00:05:10.463Z" title="更新于 2023-12-10 08:05:10">2023-12-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Node.js网络编程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Node-js网络编程"><a href="#Node-js网络编程" class="headerlink" title="Node.js网络编程"></a>Node.js网络编程</h1><p>在Web领域，大多数编程语言需要专门的Web服务器容器，如ASP需要IIS服务器，Java需要Tomcat服务器，PHP需要Apache服务器。Node则不需要额外的容器。</p>
+<p>Node提供了多个模块：</p>
+<ul>
+<li><p>net：TCP</p>
+</li>
+<li><p>dgram：UDP</p>
+</li>
+<li><p>http：HTTP</p>
+</li>
+<li><p>https：HTTPS</p>
+</li>
+</ul>
+<h2 id="构建TCP服务"><a href="#构建TCP服务" class="headerlink" title="构建TCP服务"></a>构建TCP服务</h2><p>TCP：传输控制协议。传输层</p>
+<p>大多数网络应用是基于TCP搭建的。</p>
+<p>创建会话，服务端和客户端分别提供一个套接字，实现连接。</p>
+<p>创建TCP服务器端：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> net = <span class="built_in">require</span>(<span class="string">&#x27;net&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> server = net.<span class="title function_">createServer</span>(<span class="keyword">function</span>(<span class="params">socket</span>)&#123;</span><br><span class="line">    socket.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="keyword">function</span>(<span class="params">data</span>)&#123;</span><br><span class="line">        <span class="comment">// 接收到数据</span></span><br><span class="line">        socket.<span class="title function_">write</span>(<span class="string">&#x27;接收到数据：&#x27;</span> + data);</span><br><span class="line">    &#125;);</span><br><span class="line">    socket.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="comment">// 连接断开</span></span><br><span class="line">        socket.<span class="title function_">write</span>(<span class="string">&#x27;连接断开&#x27;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    socket.<span class="title function_">write</span>(<span class="string">&#x27;Hello!!!&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 监听接口</span></span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">8124</span>, <span class="title function_">fcuntion</span>(<span class="params">socket</span>)&#123;</span><br><span class="line">    <span class="comment">// 新的连接</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>TCP服务事件：</p>
+<ul>
+<li><p>服务器事件</p>
+</li>
+<li><p>连接事件</p>
+</li>
+</ul>
+<p>服务器可以同时与多个客户端保持连接，每个连接都是可读可写的Stream对象。</p>
+<p>TCP对小数据包有优化策略：Nagle算法。合并成一个大数据包再发送，可以导致延迟，Node默认是开启的，可以关闭。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket.<span class="title function_">setNoDelay</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="构建UDP服务"><a href="#构建UDP服务" class="headerlink" title="构建UDP服务"></a>构建UDP服务</h2><p>UDP：用户数据包服务。不是面向连接的。</p>
+<p>在UDP中，一个socket可以与多个UDP服务通信。</p>
+<p>适用于允许丢包的场景，如音视频。</p>
+<p>创建UDP套接字，既可以作为客户端发送数据，也可以作为服务器接收数据。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dgram = <span class="built_in">require</span>(<span class="string">&#x27;dgram&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> socket = dgram.<span class="title function_">createSocket</span>(<span class="string">&#x27;udp4&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>接收数据</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 监听接收的数据</span></span><br><span class="line">socket.<span class="title function_">on</span>(<span class="string">&#x27;message&#x27;</span>, <span class="keyword">function</span>(<span class="params">msg, rinfo</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;接收到：&#x27;</span>, msg);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;来自：&#x27;</span> + rinfo.<span class="property">address</span>)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 监听开始事件</span></span><br><span class="line">socket.<span class="title function_">on</span>(<span class="string">&#x27;listen&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 设置接收端口</span></span><br><span class="line">sokcet.<span class="title function_">bind</span>(<span class="number">41234</span>);</span><br></pre></td></tr></table></figure>
+
+<p>发送数据</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> msg = <span class="title class_">Buffer</span>.<span class="title function_">form</span>(<span class="string">&#x27;Hello&#x27;</span>);</span><br><span class="line"><span class="comment">// 给指定主机发送数据</span></span><br><span class="line">socket.<span class="title function_">send</span>(msg, <span class="number">0</span>, msg.<span class="property">length</span>, <span class="number">41234</span>, <span class="string">&#x27;localhost&#x27;</span>, <span class="keyword">function</span>(<span class="params">err, bytes</span>)&#123;</span><br><span class="line">    <span class="comment">// 发送完成回调</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="构建HTTP服务"><a href="#构建HTTP服务" class="headerlink" title="构建HTTP服务"></a>构建HTTP服务</h2><p>TCP和UDP都是传输层协议，用于构建高效的网络应用。如果支持普通的应用，使用应用层协议就绰绰有余，如 HTTP。</p>
+<p>HTTP构建在TCP之上</p>
+<p>HTTP报文：报文头+报文体</p>
+<p>TCP服务以connection为单位，HTTP服务以request为单位，一个TCP会话可以用于多次HTTP请求和响应。</p>
+<p><strong>http模块</strong>是将connection到request的过程进行了封装。</p>
+<h3 id="HTTP服务端"><a href="#HTTP服务端" class="headerlink" title="HTTP服务端"></a>HTTP服务端</h3><p>ServerRequest</p>
+<p>ServerResponse</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> server = http.<span class="title function_">createServer</span>(<span class="keyword">function</span>(<span class="params">req, res</span>)&#123;</span><br><span class="line">    <span class="comment">// req是请求报文</span></span><br><span class="line">    <span class="comment">// req.method</span></span><br><span class="line">    <span class="comment">// req.url</span></span><br><span class="line">    <span class="comment">// 写入响应头</span></span><br><span class="line">    res.<span class="title function_">writeHead</span>(<span class="number">200</span>, &#123;</span><br><span class="line">        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;text/plain&#x27;</span> </span><br><span class="line">    &#125;);</span><br><span class="line">    res.<span class="title function_">write</span>();</span><br><span class="line">    res.<span class="title function_">end</span>();</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// </span></span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">1337</span>, <span class="string">&#x27;127.0.0.1&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>请求报文的主体是一个只读流对象，响应报文的主体是一个可写流对象。</p>
+<p>HTTP服务的事件</p>
+<ul>
+<li><p>connection：客户端与服务端建立连接时触发</p>
+</li>
+<li><p>request：在解析出请求头时触发</p>
+</li>
+<li><p>close：服务器关闭时（所有连接都断开）触发</p>
+</li>
+<li><p>connect：当客户端发起CONNECT请求时触发</p>
+</li>
+<li><p>checkContinue：当客户端发送头部带<code>Expect: 100-continue</code>的请求时触发</p>
+</li>
+<li><p>upgrade：当客户端要求升级协议时触发，与WebSocket有关</p>
+</li>
+<li><p>clientError</p>
+</li>
+</ul>
+<h3 id="HTTP客户端"><a href="#HTTP客户端" class="headerlink" title="HTTP客户端"></a>HTTP客户端</h3><p>ClientRequest</p>
+<p>ClientResponse</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>);</span><br><span class="line"><span class="comment">// 请求头内容</span></span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">    <span class="attr">port</span>: <span class="number">1334</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">    <span class="attr">path</span>:<span class="string">&#x27;/&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 创建请求ClientRequest</span></span><br><span class="line"><span class="keyword">var</span> req = http.<span class="title function_">request</span>(options, <span class="keyword">function</span>(<span class="params">res</span>)&#123;</span><br><span class="line">    <span class="comment">// 响应内容</span></span><br><span class="line">    res.<span class="title function_">setEncoding</span>(<span class="string">&#x27;utf8&#x27;</span>);</span><br><span class="line">    res.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="keyword">function</span>(<span class="params">chunk</span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line">req.<span class="title function_">end</span>();</span><br></pre></td></tr></table></figure>
+
+<p>http模块包含一个默认的客户端代码对象http.globalAgent，对连接进行管理，底层是线程池，对同一个服务端的请求最多创建5个连接（同浏览器限制相同）</p>
+<p>HTTP客户端事件</p>
+<ul>
+<li><p>response：得到服务端响应</p>
+</li>
+<li><p>socket：当底层连接分配给当前请求时</p>
+</li>
+<li><p>connect：当服务端响应了CONNECT请求时</p>
+</li>
+<li><p>upgrade：当服务端响应了<code>101 Switching Protocols</code>状态时</p>
+</li>
+<li><p>continue：当服务端响应了<code>100 Continue</code>状态时</p>
+</li>
+</ul>
+<h2 id="构建WebSocket服务"><a href="#构建WebSocket服务" class="headerlink" title="构建WebSocket服务"></a>构建WebSocket服务</h2><p><strong>Node没有内置WebSocket库，社区的ws模块封装了WebSocket底层实现。</strong></p>
+<p>WebSocket相对HTTP的好处：</p>
+<ul>
+<li><p>客户端与服务端只建立一个TCP连接</p>
+</li>
+<li><p>服务端可以推送数据到客户端，双向通信</p>
+</li>
+<li><p>协议头更轻量</p>
+</li>
+</ul>
+<p>WebSocket客户端</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> socket = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(<span class="string">&#x27;ws://127.0.0.1:12100/updates&#x27;</span>);</span><br><span class="line"><span class="comment">// 建立连接</span></span><br><span class="line">socket.<span class="title function_">onopen</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">// 向服务端发送数据</span></span><br><span class="line">    socket.<span class="title function_">send</span>();</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 接收服务端事件</span></span><br><span class="line">socket.<span class="title function_">onmessage</span>(<span class="keyword">function</span>(<span class="params">event</span>)&#123;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>WebSocket协议分为：握手和数据传输</p>
+<p>通过HTTP发送升级协议请求，特有协议头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Upgrade: websocket,</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Key: </span><br><span class="line">Sec-WebSocket-Protocol: char, superchat</span><br><span class="line">Sec-WebSocket-Version: 13</span><br></pre></td></tr></table></figure>
+
+<p>重点：<code>Sec-WebSocket-Key</code>的值用于校验。</p>
+<p>（1）客户端随机生成一个Base64编码的字符串key。</p>
+<p>（2）服务端拿到该字符串后，与一串特定字符串拼接，计算SHA1散列值，再进行Base64编码，放在响应的<code>Sec-WebSocket-Accept</code>中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Base64(sha1(key+&#x27;xxx&#x27;))</span><br></pre></td></tr></table></figure>
+
+<p>（3）客户端通过响应拿到返回值，进行校验</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Base64(sha1(key+&#x27;xxx&#x27;)) == accept</span><br></pre></td></tr></table></figure>
+
+<p>WeBSocket数据帧协议</p>
+<p>客户端需要对发送的数据帧进行掩码处理，服务端发送给客户端的则不能做掩码处理。</p>
+<p>每8位（1个字节）为一列。</p>
+<p>每一位的意义：</p>
+<ul>
+<li><p>opcode：4位操作码，用来描述当前帧</p>
+</li>
+<li><p>masked：1位，是否进行掩码处理，客户端为1需要掩码，服务端为0不需要掩码</p>
+</li>
+<li><p>payload length：7或7+16或7+64位，标识数据长度</p>
+</li>
+<li><p>masking key：32位，掩码</p>
+</li>
+<li><p>payload data：位数为8的倍数，数据</p>
+</li>
+</ul>
+<p>发送数据时，需要构造一个或多个数据帧协议报文。</p>
+<p>客户端发送报文时，需要使用掩码对二进制进行加密，服务端收到后，需要进行解密。</p>
+<p>服务端发送报文时，无需掩码。</p>
+<h2 id="网络服务与安全"><a href="#网络服务与安全" class="headerlink" title="网络服务与安全"></a>网络服务与安全</h2><p>SSL（Secure Sockets Layer，安全套接协议）很早就提出了，是一种安全协议，在传输层对网络连接进行加密和解密，应用层是透明的，后来标准化为 TLS（Transport Layer Security）安全传输层协议。</p>
+<p>Node提供了3个安全方面的模块：</p>
+<ul>
+<li><p>crypto：各种加密算法</p>
+</li>
+<li><p>tls：功能与net模块类似，但建立在 TLS&#x2F;SSL 加密的 TCP 连接上</p>
+</li>
+<li><p>https：功能和http模块类似，只是建立在安全连接上</p>
+</li>
+</ul>
+<h3 id="TLS-SSL"><a href="#TLS-SSL" class="headerlink" title="TLS&#x2F;SSL"></a>TLS&#x2F;SSL</h3><p>基于非对称加密</p>
+<p>客户端和服务端都有自己的公钥&#x2F;私钥。公钥加密要发送的数据，私钥解密接收到的数据。</p>
+<p>在建立安全传输之前，客户端和服务端需要互换公钥。给谁发送消息就用谁的公钥进行加密，对方接收到使用自己的私钥就可以解密。</p>
+<p>Node的底层采用openssl来实现TLS&#x2F;SSL。</p>
+<p>生成私钥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa</span><br></pre></td></tr></table></figure>
+
+<p>生成公钥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa</span><br></pre></td></tr></table></figure>
+
+<p>中间人攻击：在客户端和服务器交换公钥时，攻击者插入其中，同时扮演客户端和服务端，获得双方的公钥，这样就可以解密拿到双方的真实数据。</p>
+<p>为了解决中间人攻击，TLS&#x2F;SSL引入了“数字证书”。</p>
+<p><strong>数字证书</strong></p>
+<p>主要包含：</p>
+<ul>
+<li><p>服务器基本信息</p>
+</li>
+<li><p><strong>服务器公钥</strong></p>
+</li>
+<li><p>认证机构信息</p>
+</li>
+<li><p><strong>认证机构的签名</strong></p>
+</li>
+</ul>
+<p>引入了一个第三方——CA（Certificate Authority，证书认证机构），CA的作用是为站点颁发证书。</p>
+<p>通过正规的证书机构颁发证书需要付出一定的精力和费用，大部分小公司采用“自签名证书”，即自己扮演CA，给自己的服务器颁发证书。</p>
+<p>服务器端：</p>
+<ul>
+<li><p>通过私钥生成CSR（Certificate Signing Request，证书签名请求）</p>
+</li>
+<li><p>把CSR交给CA</p>
+</li>
+</ul>
+<p>CA端颁发证书：</p>
+<ul>
+<li><p>生成自己的私钥key</p>
+</li>
+<li><p>生成自己的csr</p>
+</li>
+<li><p>生成自己的证书crt</p>
+</li>
+<li><p>用自己的私钥key和证书crt给服务器的csr生成服务器的crt</p>
+</li>
+<li><p>把服务器crt交给服务器</p>
+</li>
+</ul>
+<p>客户端连接前会获取服务器证书，并通过CA证书验证服务端证书的真伪。</p>
+<p>知名CA机构的证书一般预装在浏览器中，自签名证书客户端需要获取。</p>
+<h3 id="TLS服务"><a href="#TLS服务" class="headerlink" title="TLS服务"></a>TLS服务</h3><p>创建服务器端</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tls = <span class="built_in">require</span>(<span class="string">&#x27;tls&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="comment">// 服务器私钥</span></span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/server.key&#x27;</span>),</span><br><span class="line">    <span class="comment">// 服务器证书</span></span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/server.cert&#x27;</span>),</span><br><span class="line">    <span class="attr">requestCert</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// CA证书</span></span><br><span class="line">    <span class="attr">ca</span>: [fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/ca.cert&#x27;</span>)]</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> server = tls.<span class="title function_">createServer</span>(options, <span class="keyword">function</span>(<span class="params">stream</span>))</span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">8000</span>, <span class="keyword">function</span>)</span><br></pre></td></tr></table></figure>
+
+<p>创建客户端</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tls = <span class="built_in">require</span>(<span class="string">&#x27;tls&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="comment">// 客户端私钥</span></span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/server.key&#x27;</span>),</span><br><span class="line">    <span class="comment">// 客户端证书</span></span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/server.cert&#x27;</span>),</span><br><span class="line">    <span class="comment">// CA证书</span></span><br><span class="line">    <span class="attr">ca</span>: [fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/ca.cert&#x27;</span>)]</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> stream = tls.<span class="title function_">connect</span>(<span class="number">8000</span>, options, <span class="keyword">function</span>)</span><br><span class="line">stream.<span class="title function_">setEncoding</span>(<span class="string">&#x27;uft8&#x27;</span>)</span><br><span class="line">stream.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="keyword">function</span>);</span><br><span class="line">stream.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="keyword">function</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="HTTPS服务"><a href="#HTTPS服务" class="headerlink" title="HTTPS服务"></a>HTTPS服务</h3><p>HTTPS服务是工作在TLS&#x2F;SSL上的HTTP。</p>
+<p>服务端需要准备私钥和签名证书。</p>
+<p>HTTPS服务端</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/server.key&#x27;</span>),</span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/server.cert&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line">https.<span class="title function_">createServer</span>(options, <span class="keyword">function</span>(<span class="params">req, res</span>)&#123;</span><br><span class="line">    res.<span class="title function_">writeHead</span>()</span><br><span class="line">    res.<span class="title function_">end</span>()</span><br><span class="line">&#125;).<span class="title function_">listen</span>(<span class="number">8000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>HTTPS客户端</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">    <span class="attr">port</span>: <span class="number">8000</span>,</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/client.key&#x27;</span>),</span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/client.cert&#x27;</span>),</span><br><span class="line">    <span class="attr">ca</span>: [fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/ca.cert&#x27;</span>)]</span><br><span class="line">&#125;</span><br><span class="line">options.<span class="property">agent</span> = <span class="keyword">new</span> https.<span class="title class_">Agent</span>(options)</span><br><span class="line"><span class="keyword">var</span> req = https.<span class="title function_">request</span>(options, <span class="keyword">function</span>(<span class="params">res</span>)&#123;&#125;)</span><br><span class="line">req.<span class="title function_">end</span>()</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://odinqq.github.io">qintj</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://odinqq.github.io/2023/04/02/Node-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">https://odinqq.github.io/2023/04/02/Node-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://odinqq.github.io" target="_blank">QinのBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/JavaScript/">JavaScript</a><a class="post-meta__tags" href="/tags/Node-js/">Node.js</a><a class="post-meta__tags" href="/tags/%E5%90%8E%E7%AB%AF/">后端</a></div><div class="post_share"></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/04/03/Node-%E5%BC%82%E6%AD%A5IO/" title="Node.js异步IO"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Node.js异步IO</div></div></a></div><div class="next-post pull-right"><a href="/2023/02/11/JS%E5%AF%84%E7%94%9F%E7%BB%84%E5%90%88%E5%BC%8F%E7%BB%A7%E6%89%BF/" title="JavaScript寄生式组合继承"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JavaScript寄生式组合继承</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/05/01/Node-Buffer/" title="Node.js Buffer"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="title">Node.js Buffer</div></div></a></div><div><a href="/2023/04/20/Node-%E5%86%85%E5%AD%98%E6%8E%A7%E5%88%B6/" title="Node.js内存控制"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-20</div><div class="title">Node.js内存控制</div></div></a></div><div><a href="/2023/04/03/Node-%E5%BC%82%E6%AD%A5IO/" title="Node.js异步IO"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-03</div><div class="title">Node.js异步IO</div></div></a></div><div><a href="/2022/12/28/DOM%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6/" title="DOM交互事件"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-28</div><div class="title">DOM交互事件</div></div></a></div><div><a href="/2022/12/17/JS%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE/" title="JavaScript作用域链"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-17</div><div class="title">JavaScript作用域链</div></div></a></div><div><a href="/2022/12/16/JS%E5%87%BD%E6%95%B0/" title="JavaScript函数"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-16</div><div class="title">JavaScript函数</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">qintj</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/OdinQQ"><i class="fab fa-github"></i><span>GitHub</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">斯是陋室，惟吾德馨。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Node-js%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">Node.js网络编程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BATCP%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.</span> <span class="toc-text">构建TCP服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BAUDP%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">构建UDP服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BAHTTP%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.</span> <span class="toc-text">构建HTTP服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-number">1.3.1.</span> <span class="toc-text">HTTP服务端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.3.2.</span> <span class="toc-text">HTTP客户端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BAWebSocket%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.4.</span> <span class="toc-text">构建WebSocket服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%AE%89%E5%85%A8"><span class="toc-number">1.5.</span> <span class="toc-text">网络服务与安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TLS-SSL"><span class="toc-number">1.5.1.</span> <span class="toc-text">TLS&#x2F;SSL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TLS%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.5.2.</span> <span class="toc-text">TLS服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTPS%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.5.3.</span> <span class="toc-text">HTTPS服务</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/01/Vue-Vue3Hooks/" title="Vue3 Hooks">Vue3 Hooks</a><time datetime="2023-11-30T16:00:00.000Z" title="发表于 2023-12-01 00:00:00">2023-12-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/Vue-Vue3%E7%9A%84%E4%BC%98%E5%8C%96/" title="Vue3相对于Vue2的优化">Vue3相对于Vue2的优化</a><time datetime="2023-10-09T16:00:00.000Z" title="发表于 2023-10-10 00:00:00">2023-10-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/04/Vue-%E6%BA%90%E7%A0%81%E6%A6%82%E8%BF%B0/" title="Vue源码概述">Vue源码概述</a><time datetime="2023-10-03T16:00:00.000Z" title="发表于 2023-10-04 00:00:00">2023-10-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/08/25/Spring%E7%B3%BB%E5%88%97%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3/" title="SpringBoot常用注解">SpringBoot常用注解</a><time datetime="2023-08-24T16:00:00.000Z" title="发表于 2023-08-25 00:00:00">2023-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/01/Node-Buffer/" title="Node.js Buffer">Node.js Buffer</a><time datetime="2023-04-30T16:00:00.000Z" title="发表于 2023-05-01 00:00:00">2023-05-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By qintj</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="8920954215" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrc-type="0"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

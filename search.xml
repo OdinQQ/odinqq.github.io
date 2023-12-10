@@ -1,6 +1,1487 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>DOM交互事件</title>
+    <url>/2022/12/28/DOM%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6/</url>
+    <content><![CDATA[<h1 id="DOM交互事件"><a href="#DOM交互事件" class="headerlink" title="DOM交互事件"></a>DOM交互事件</h1><p>事件是浏览器或文档交互的瞬间，如点击事件，是 JS 与 HTML 交互的桥梁。</p>
+<p>事件流有两种：</p>
+<ul>
+<li><p>事件捕获：事件从根节点向下传递，最终到达具体节点。</p>
+</li>
+<li><p>事件冒泡：事件从最底层的节点向父级节点传递。</p>
+</li>
+</ul>
+<h2 id="事件模型"><a href="#事件模型" class="headerlink" title="事件模型"></a>事件模型</h2><ul>
+<li><p>DOM0 级模型</p>
+</li>
+<li><p>IE 事件模型</p>
+</li>
+<li><p>DOM2 级模型</p>
+</li>
+</ul>
+<h3 id="DOM0-级模型"><a href="#DOM0-级模型" class="headerlink" title="DOM0 级模型"></a>DOM0 级模型</h3><p>又称“原始事件模型”，此时还没有事件流的概念。所有浏览器都支持。</p>
+<p><strong>绑定事件</strong></p>
+<p>（1）在 HTML 中绑定</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;fun&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>（2）通过 JS 绑定</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;btn&#x27;</span>);</span><br><span class="line">btn.<span class="property">onclick</span> = fun;</span><br><span class="line"><span class="comment">// 移除监听函数</span></span><br><span class="line">btn.<span class="property">onclick</span> = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="IE-事件模型"><a href="#IE-事件模型" class="headerlink" title="IE 事件模型"></a>IE 事件模型</h3><p>支持事件流。</p>
+<p>有两个过程：</p>
+<ul>
+<li><p>事件处理阶段（target phase）：事件到达目标节点后，触发事件监听</p>
+</li>
+<li><p>事件冒泡阶段（bubbling phase）：目标节点处理完事件后，事件向上冒泡，检查上级节点有没有设置监听函数，有则触发。</p>
+</li>
+</ul>
+<p>事件的绑定和移除</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">attachEvent</span>(eventType, handler);</span><br><span class="line"><span class="title function_">detachEvent</span>(eventType, handler);</span><br><span class="line"></span><br><span class="line">btn.<span class="title function_">attachEvent</span>(<span class="string">&#x27;onclick&#x27;</span>, showMessage);</span><br><span class="line">btn.<span class="title function_">detachEvent</span>(<span class="string">&#x27;onclick&#x27;</span>, showMessage);</span><br></pre></td></tr></table></figure>
+
+<h3 id="DOM2-级模型"><a href="#DOM2-级模型" class="headerlink" title="DOM2 级模型"></a>DOM2 级模型</h3><p>W3C 标准模型，现代浏览器（除 IE6-8 之外的浏览器）都支持该模型。</p>
+<p>发生一次事件共有三个过程：</p>
+<ul>
+<li><p>事件捕获阶段（capturing phase）：事件从document向下传播，检查是否有监听，有则执行</p>
+</li>
+<li><p>事件处理阶段（target phase）：事件到达目标节点，触发监听函数</p>
+</li>
+<li><p>事件冒泡阶段（bubbling phase）：事件从目标元素冒泡到document，检查是否绑定了监听，有则执行</p>
+</li>
+</ul>
+<p>绑定和移除事件监听</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// useCapture是否在捕获阶段调用处理函数</span></span><br><span class="line"><span class="title function_">addEventListener</span>(eventType, handler, useCapture);</span><br><span class="line"><span class="title function_">removeEventListener</span>(eventType, handler, useCapture);</span><br></pre></td></tr></table></figure>
+
+<h2 id="事件对象"><a href="#事件对象" class="headerlink" title="事件对象"></a>事件对象</h2><p>事件对象的常用属性</p>
+<p>IE事件模型中：</p>
+<ul>
+<li><p>type：事件类型</p>
+</li>
+<li><p>srcElement：事件目标节点</p>
+</li>
+<li><p>cancelBubble：取消事件冒泡标记</p>
+</li>
+<li><p>returnValue：阻止事件默认行为标记</p>
+</li>
+</ul>
+<p>DOM事件模型中：</p>
+<ul>
+<li><p>type</p>
+</li>
+<li><p>target：事件目标</p>
+</li>
+<li><p>stopPropagation()：阻止事件冒泡</p>
+</li>
+<li><p>preventDefault()：阻止事件默认行为</p>
+</li>
+</ul>
+<h2 id="事件代理"><a href="#事件代理" class="headerlink" title="事件代理"></a>事件代理</h2><p>事件在冒泡过程中会上传到父节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件。</p>
+<p>优点：减少事件注册的数量，节省内存。</p>
+<p>缺点：增加事件处理函数的复杂度，需要判断是哪个子节点触发的，可能出现误判。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">box.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">target</span>.<span class="property">tagName</span>.<span class="title function_">toLowerCase</span>() === <span class="string">&#x27;input&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// some code</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义事件"><a href="#自定义事件" class="headerlink" title="自定义事件"></a>自定义事件</h2><p>（1）创建一个事件</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> event = <span class="keyword">new</span> <span class="title class_">Event</span>(<span class="string">&#x27;threeclick&#x27;</span>, &#123;</span><br><span class="line">    <span class="string">&#x27;bubbles&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&#x27;cancelable&#x27;</span>: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>（2）在合适的时机触发该事件</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">target.<span class="title function_">dispatchEvent</span>(event);</span><br></pre></td></tr></table></figure>
+
+<p>（3）注册监听函数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">target.<span class="title function_">addEventListener</span>(<span class="string">&#x27;threeclick&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line"></span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>JavaScript</tag>
+        <tag>浏览器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript作用域链</title>
+    <url>/2022/12/17/JS%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE/</url>
+    <content><![CDATA[<h1 id="JavaScript作用域链"><a href="#JavaScript作用域链" class="headerlink" title="JavaScript作用域链"></a>JavaScript作用域链</h1><p>编程语言中的作用域可分为：</p>
+<ul>
+<li><p>词法作用域：大多数</p>
+</li>
+<li><p>动态作用域</p>
+</li>
+</ul>
+<p>JS 中只支持词法作用域， this 机制某种程度上很像动态作用域。</p>
+<p>词法域所见即所得，易于理解。</p>
+<p>闭包是基于词法域书写代码时产生的自然结果。</p>
+<h2 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h2><p>书写位置决定作用域。</p>
+<p>欺骗词法：在运行时修改作用域。</p>
+<ul>
+<li><p>eval：运行时植入JS代码。</p>
+</li>
+<li><p>with：运行时指定作用域。</p>
+</li>
+</ul>
+<p>闭包是基于词法作用域</p>
+<h2 id="作用域（scope）"><a href="#作用域（scope）" class="headerlink" title="作用域（scope）"></a>作用域（scope）</h2><p>作用域指的是 <strong>变量</strong> 的作用域。作用是隔离变量，限制一个变量的影响范围。</p>
+<p>变量的作用域是在定义时就确定的，对代码进行静态分析就可以确定。</p>
+<blockquote>
+<p>词法作用域：定义在词法阶段的作用域，也叫做静态作用域。</p>
+</blockquote>
+<blockquote>
+<p>动态作用域：不关心定义，只关心调用，运行时确定，作用域链基于调用栈。</p>
+</blockquote>
+<p>ES5 作用域：</p>
+<ul>
+<li>全局作用域</li>
+<li>函数作用域：function</li>
+<li>块级作用域</li>
+</ul>
+<h3 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h3><ul>
+<li><p>在全局声明</p>
+</li>
+<li><p>未声明直接使用</p>
+</li>
+</ul>
+<h3 id="函数作用域"><a href="#函数作用域" class="headerlink" title="函数作用域"></a>函数作用域</h3><p>在函数内部声明的变量</p>
+<h3 id="块级作用域"><a href="#块级作用域" class="headerlink" title="块级作用域"></a>块级作用域</h3><p>隐形块级作用域</p>
+<ul>
+<li><p>with</p>
+</li>
+<li><p>catch 子句</p>
+</li>
+</ul>
+<p>ES6 开始正式支持：</p>
+<ul>
+<li><p>let</p>
+</li>
+<li><p>const</p>
+</li>
+</ul>
+<h2 id="作用域链（Scope-Chain）"><a href="#作用域链（Scope-Chain）" class="headerlink" title="作用域链（Scope Chain）"></a>作用域链（Scope Chain）</h2><p>在 JavaScript 中，函数也是对象，它的 <code>[[Scope]]</code> 内部属性包含了函数被创建的作用域中对象的集合，这个集合被称为函数的作用域链。</p>
+<blockquote>
+<p>内部属性仅供 JavaScript 引擎访问</p>
+</blockquote>
+<p>作用域链决定了哪些数据能被函数访问。</p>
+<p>一般来说，函数的作用域链至少包括其本身作用域和全局作用域。</p>
+<p>函数与函数的嵌套形成了作用域链</p>
+<p>作用域链的本质上是一个指向“变量对象”的指针列表。</p>
+<p>作用域链的第一个对象始终都是当前执行上下文的变量对象，全局执行上下文的变量对象始终是作用域链的最后一个对象。</p>
+<h2 id="变量提升和函数提升"><a href="#变量提升和函数提升" class="headerlink" title="变量提升和函数提升"></a>变量提升和函数提升</h2><p>在作用域中 <strong>var变量</strong> 和 <strong>函数</strong> 的声明会被提升到作用域的开头。</p>
+<p>并且，当函数名和 var 变量名相同时，函数名会覆盖变量名。</p>
+<p>函数表达式不会提升。</p>
+<h2 id="变量查询机制"><a href="#变量查询机制" class="headerlink" title="变量查询机制"></a>变量查询机制</h2><ul>
+<li><p>左查询（LHS）：查询变量的内存地址。如果在作用域链上查询不到，默认情况下就会创建一个全局变量，严格模式下则会抛出 ReferenceError 异常。</p>
+</li>
+<li><p>右查询（RHS）：查询变量的值。在作用域链上查询不到则会抛出 ReferenceError 异常。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript函数</title>
+    <url>/2022/12/16/JS%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="JavaScript函数"><a href="#JavaScript函数" class="headerlink" title="JavaScript函数"></a>JavaScript函数</h1><h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><p>匿名函数：函数声明时不指定函数名。</p>
+<p>匿名函数的用途：多用于封装私有变量，防止变量污染。</p>
+<p><strong>匿名函数自运行</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line"></span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>包裹匿名函数的小括号把匿名函数变成了一个优先执行的表达式，表达式一定会返回结果，且结果为函数本身，再在后面加一个小括号，就等于调用函数。</p>
+<p>所有可以把“函数声明”变为表达式的运算符都可以让匿名函数自运行，如：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用 + 执行效率最高</span></span><br><span class="line">+<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line"></span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+
+<h2 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h2><p>递归函数必须有结束条件，中止递归，向上返回。</p>
+<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h2><p>回调函数指的是函数的使用方式。</p>
+<p>把一个函数交给别人，在合适的时候再调用。</p>
+<p>这里面还涉及了 this 的指向问题。</p>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>是对函数的特殊调用方式。</p>
+<p>对一个函数使用 new 关键字，返回值是一个对象。</p>
+<p>习惯：构造函数首字母大写。</p>
+<h2 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a>默认参数</h2><p>语法与 Python 类似。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function fun(形参=默认值, ...) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="闭包函数"><a href="#闭包函数" class="headerlink" title="闭包函数"></a>闭包函数</h2><p>闭包函数：声明在一个函数中的函数。</p>
+<p>闭包的两要素：</p>
+<ul>
+<li><p>函数嵌套</p>
+</li>
+<li><p>内层函数引用外层函数中定义的变量</p>
+</li>
+</ul>
+<p>闭包的用途：隔离</p>
+<ul>
+<li><p>实现数据私有</p>
+</li>
+<li><p>模块化</p>
+</li>
+</ul>
+<h2 id="函数的柯里化"><a href="#函数的柯里化" class="headerlink" title="函数的柯里化"></a>函数的柯里化</h2><p>把一个多参函数转化为一个单一参数的嵌套函数，这个函数需要多次调用才能获得最终值。</p>
+<p>柯里化（currying）又称为“部分求值”。</p>
+<p>使用闭包实现。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fun</span>(<span class="params">a, b, c</span>)&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">funCurrying</span>(<span class="params">a</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params">b</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params">c</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">fun</span>(a, b, c);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">fun</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) == <span class="title function_">funCurring</span>(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p>通用柯里化函数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">curry</span>(<span class="params">fn</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">curried</span>(<span class="params">...args</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(args.<span class="property">length</span> &gt;= fn.<span class="property">length</span>)&#123;</span><br><span class="line">            <span class="comment">// 最终调用原函数</span></span><br><span class="line">            <span class="keyword">return</span> fn.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params">..args1</span>) &#123;</span><br><span class="line">                <span class="comment">// 递归</span></span><br><span class="line">                <span class="comment">// 参数合并 </span></span><br><span class="line">                <span class="keyword">return</span> curried.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args.<span class="title function_">concat</span>(args1));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sum</span>(<span class="params">a, b, c</span>) &#123;&#125;</span><br><span class="line"><span class="keyword">const</span> sumCurried = <span class="title function_">curry</span>(sum);</span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ul>
+<li><p>让函数更加灵活，参数可以自由组合。</p>
+</li>
+<li><p>可以生成部分参数预设的函数，便于复用。</p>
+</li>
+</ul>
+<p>缺点：让函数的调用更加复杂，多次传参，降低了可读性。</p>
+<h2 id="函数的反柯里化"><a href="#函数的反柯里化" class="headerlink" title="函数的反柯里化"></a>函数的反柯里化</h2><p>反柯里化：将柯里化函数转化为接收多个参数的过程。</p>
+<p>柯里化函数的第一个参数是原函数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">uncurry</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 指向柯里化函数</span></span><br><span class="line">    <span class="keyword">let</span> self = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="comment">// 返回一个普通函数，第一个参数是函数的this，后面是全部传参</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// 等于 self.call(arguments)</span></span><br><span class="line">        <span class="comment">// 等于 arguments[0].self(arguments[1,n-1]);</span></span><br><span class="line">        <span class="comment">// 调用柯里化函数，传入所有参数</span></span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">call</span>.<span class="title function_">apply</span>(self, <span class="variable language_">arguments</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="箭头函数（Arrow-Function）"><a href="#箭头函数（Arrow-Function）" class="headerlink" title="箭头函数（Arrow Function）"></a>箭头函数（Arrow Function）</h2><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(形参) =&gt; &#123;</span><br><span class="line">    函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>箭头函数的特殊点：</p>
+<ul>
+<li><p>箭头函数没有 prototype</p>
+</li>
+<li><p>箭头函数没有没有自己的 this：this 指向定义该箭头函数所处的的作用域。</p>
+</li>
+</ul>
+<p>箭头函数类似于 inline 函数，单纯的执行代码块。</p>
+<h2 id="函数中-this-的指向"><a href="#函数中-this-的指向" class="headerlink" title="函数中 this 的指向"></a>函数中 this 的指向</h2><p>普通函数：函数被调用时。</p>
+<p>箭头函数：函数所在代码被调用时</p>
+<ul>
+<li>对象字面量：对象所处的作用域。</li>
+<li>函数：外围函数调用时</li>
+<li>构造函数：创建对象时</li>
+</ul>
+<p>箭头函数不能通过 <code>call()</code> 或 <code>apply()</code> 改变 this。</p>
+<p>不能对一个箭头函数使用 new</p>
+<h2 id="Function构造函数和原型"><a href="#Function构造函数和原型" class="headerlink" title="Function构造函数和原型"></a>Function构造函数和原型</h2><p>length 属性：函数属性，记录函数形参的个数。</p>
+<p>arguments 属性：函数运行环境参数，存储函数的实参。箭头函数没有自己的 this，通过该属性得不到实参。</p>
+<p><strong>原型方法</strong></p>
+<p><code>Function.prototype.apply()</code></p>
+<p>应用（立即执行）函数，指定 this 和实参（数组形式）。</p>
+<p><code>Function.prototype.call()</code></p>
+<p>调用（立即执行）函数，指定 this 和实参（剩余参数）。</p>
+<p><code>Function.prototype.bind()</code></p>
+<p>返回一个绑定了 this 和参数的新函数。不会立即执行。</p>
+<p><code>Function.prototype.toString()</code></p>
+<p>获取函数的源码的字符串。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/Cwd_wade/article/details/130426886">Javascript 中的柯里化与反柯里化-CSDN博客</a></p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript寄生式组合继承</title>
+    <url>/2023/02/11/JS%E5%AF%84%E7%94%9F%E7%BB%84%E5%90%88%E5%BC%8F%E7%BB%A7%E6%89%BF/</url>
+    <content><![CDATA[<h1 id="JavaScript寄生式组合继承"><a href="#JavaScript寄生式组合继承" class="headerlink" title="JavaScript寄生式组合继承"></a>JavaScript寄生式组合继承</h1><p>“寄生式组合继承”可以算是引用类型继承的最佳模式，在“组合继承”的基础上进一步优化。</p>
+<p>JS中，一个类即一个构造函数。</p>
+<h2 id="组合继承"><a href="#组合继承" class="headerlink" title="组合继承"></a>组合继承</h2><p>父类</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Father</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">// 类属性</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 类方法</span></span><br><span class="line"><span class="title class_">Father</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">xxx</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>子类</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Sub</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">// 调用父类构造函数，继承父类属性</span></span><br><span class="line">    <span class="title class_">Father</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用父类构造函数，指定原型，继承父类方法</span></span><br><span class="line"><span class="title class_">Sub</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="keyword">new</span> <span class="title class_">Father</span>();</span><br><span class="line"><span class="comment">// 指定子类的原型为自己，原型与构造函数双向绑定</span></span><br><span class="line"><span class="title class_">Sub</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> = <span class="title class_">Sub</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="寄生式组合继承"><a href="#寄生式组合继承" class="headerlink" title="寄生式组合继承"></a>寄生式组合继承</h2><p>相对于组合继承，优化的一点是 <code>Sub.prototype = new Father();</code>，不通过<code>new</code>创建原型，而是通过<code>Object.create()</code>创建原型。</p>
+<p><code>Object.create()</code>创建的对象没有构造函数的属性，只有原型。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子类构造</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Sub</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">// 调用父类构造函数，继承父类属性</span></span><br><span class="line">    <span class="title class_">Father</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 克隆父类原型</span></span><br><span class="line"><span class="keyword">const</span> proto = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="title class_">Father</span>.<span class="property"><span class="keyword">prototype</span></span>);</span><br><span class="line"><span class="comment">// 子类构造函数和原型双向绑定，继承父类方法</span></span><br><span class="line"><span class="title class_">Sub</span>.<span class="property"><span class="keyword">prototype</span></span> = proto;</span><br><span class="line">proto.<span class="property">constructor</span> = <span class="title class_">Sub</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript异步编程</title>
+    <url>/2023/01/07/JS%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="JavaScript异步编程"><a href="#JavaScript异步编程" class="headerlink" title="JavaScript异步编程"></a>JavaScript异步编程</h1><p>同步：按顺序执行代码，当前代码执行完毕才会执行后续。</p>
+<p>异步：执行到异步代码时，把异步代码打包成任务放入任务队列后，就继续执行后续代码，不会等待异步代码执行完毕。</p>
+<p>实现异步的四种方法：</p>
+<ul>
+<li><p>回调函数</p>
+</li>
+<li><p>Promise：ES6</p>
+</li>
+<li><p>Generator：ES6</p>
+</li>
+<li><p>async&#x2F;await：ES7，终极方案</p>
+</li>
+</ul>
+<h2 id="（1）回调函数"><a href="#（1）回调函数" class="headerlink" title="（1）回调函数"></a>（1）回调函数</h2><p>略</p>
+<h2 id="（2）Promise"><a href="#（2）Promise" class="headerlink" title="（2）Promise"></a>（2）Promise</h2><p>Promise 是 ES6 加入的。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1. 创建Promise对象</span></span><br><span class="line"><span class="keyword">let</span> promise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> data = <span class="title function_">doSomething</span>();</span><br><span class="line">    <span class="comment">// 传回数据</span></span><br><span class="line">    <span class="title function_">resolve</span>(data); </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 通过promise.then()获取数据</span></span><br><span class="line">promise.<span class="title function_">then</span>(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="（3）Generator"><a href="#（3）Generator" class="headerlink" title="（3）Generator"></a>（3）Generator</h2><p>Generator 用于更方便的创建 iterator（迭代器）。</p>
+<p>Generator 相当于 ES6 的协程。</p>
+<blockquote>
+<p>协程：可暂停执行过程的函数。</p>
+</blockquote>
+<p>任何数据结构只要部署了 Iterator 接口，就可以完成遍历操作。</p>
+<p><strong>简单使用</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义 Generator 函数</span></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">buildIterator</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> iterator = <span class="title function_">buildIterator</span>();</span><br><span class="line">iterator.<span class="title function_">next</span>();</span><br><span class="line">iterator.<span class="title function_">next</span>();</span><br></pre></td></tr></table></figure>
+
+<p>迭代器内部的 <code>yield</code> 语句给迭代器返回值，并暂停代码执行。</p>
+<p>调用迭代器的 <code>next()</code> 方法，迭代器内部代码继续执行，直到 <code>yield</code> 语句再次暂停。</p>
+<p><strong>Generator 函数本身跟异步是没有关系的，但使用它可以实现异步编程。</strong></p>
+<p>示例，使用 Generator 实现 async&#x2F;await：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 执行async函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">runCoroutine</span>(<span class="params">generator</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> iterator = <span class="title function_">generator</span>();</span><br><span class="line">  <span class="comment">// 内部函数，执行下一步，value是上一次等待的结果</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">step</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> res = iterator.<span class="title function_">next</span>(value);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;yield结果&quot;</span>, res);</span><br><span class="line">    <span class="keyword">if</span> (res.<span class="property">done</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (res.<span class="property">value</span> <span class="keyword">instanceof</span> <span class="title class_">Promise</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> res.<span class="property">value</span>.<span class="title function_">then</span>(step);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">step</span>(res.<span class="property">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">step</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="（4）async-await"><a href="#（4）async-await" class="headerlink" title="（4）async&#x2F;await"></a>（4）async&#x2F;await</h2><p>async&#x2F;await 是 JS 异步编程的终极方案。</p>
+<p>本质上它们是 Generator 的语法糖。await 相当于 <code>yield Promise</code>，等 Promise 执行结束后调用 <code>next()</code>，继续执行后续代码。</p>
+<p>async&#x2F;await 一般是与 Promise 配合使用的。</p>
+<h3 id="async-函数"><a href="#async-函数" class="headerlink" title="async 函数"></a>async 函数</h3><p>async 函数的返回结果是一个 Promise 对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">async function test()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>async 函数的执行与返回结果的关系：</p>
+<ul>
+<li>非 Promise 类型数据：Promise 成功</li>
+<li>Promise 对象：由 Promise 对象的结果决定</li>
+<li>抛出异常：Promise 失败</li>
+</ul>
+<h3 id="await-表达式"><a href="#await-表达式" class="headerlink" title="await 表达式"></a>await 表达式</h3><p>await 右侧的表达式一般为 Promise 对象，此时 await 返回的是 promise 成功的值，如果 promise 失败则会抛出异常。</p>
+<p>如果 await 右侧是一个非 Promise 值，则直接返回该值。</p>
+<p>await 主要是为了：获取 Promise 的成功值。</p>
+<p>await 必须写在 async 函数中，但 async 函数中可以没有 await 表达式。</p>
+<h3 id="辅助函数"><a href="#辅助函数" class="headerlink" title="辅助函数"></a>辅助函数</h3><p>Node.js 的核心模块 util 中提供了一个方法<code>util.promisify()</code>，可以将基于回调的函数转换为基于 Promise 的函数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> util = <span class="built_in">require</span>(<span class="string">&#x27;util&#x27;</span>);</span><br><span class="line"><span class="comment">// 将fs模块中的readFile函数Promise化</span></span><br><span class="line"><span class="keyword">const</span> readFilePromise = util.<span class="title function_">promisify</span>(fs.<span class="property">readFile</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="实践：合并多个文件"><a href="#实践：合并多个文件" class="headerlink" title="实践：合并多个文件"></a>实践：合并多个文件</h3><p>读取文件（回调方式）</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">readFile</span>(<span class="params"></span>)&#123;</span><br><span class="line">    fs.<span class="title function_">readFile</span>(<span class="string">&#x27;./res/file1.txt&#x27;</span>, <span class="function">(<span class="params">err1, data1</span>) =&gt;</span> &#123;</span><br><span class="line">        fs.<span class="title function_">readFile</span>(<span class="string">&#x27;./res/file2.txt&#x27;</span>, <span class="function">(<span class="params">err2, data2</span>) =&gt;</span> &#123;</span><br><span class="line">            fs.<span class="title function_">readFile</span>(<span class="string">&#x27;./res/file3.txt&#x27;</span>, <span class="function">(<span class="params">err3, data3</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(data1 + <span class="string">&#x27;\n&#x27;</span> + data2 + <span class="string">&#x27;\n&#x27;</span> + data3);    </span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>读取文件（async与await）</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">readFile</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> data1 = <span class="keyword">await</span> <span class="title function_">readFilePromise</span>(<span class="string">&#x27;./res/file1.txt&#x27;</span>);</span><br><span class="line">    <span class="keyword">let</span> data2 = <span class="keyword">await</span> <span class="title function_">readFilePromise</span>(<span class="string">&#x27;./res/file2.txt&#x27;</span>);</span><br><span class="line">    <span class="keyword">let</span> data3 = <span class="keyword">await</span> <span class="title function_">readFilePromise</span>(<span class="string">&#x27;./res/file3.txt&#x27;</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(data1 + <span class="string">&#x27;\n&#x27;</span> + data2 + <span class="string">&#x27;\n&#x27;</span> + data3);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简洁，没有回调函数嵌套。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript数据类型</title>
+    <url>/2022/12/14/JS%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="JavaScript数据类型"><a href="#JavaScript数据类型" class="headerlink" title="JavaScript数据类型"></a>JavaScript数据类型</h1><p>原始&#x2F;基本数据类型（7种）：</p>
+<ol>
+<li><p>Number</p>
+</li>
+<li><p>String</p>
+</li>
+<li><p>Boolean</p>
+</li>
+<li><p>Undefined：undefined</p>
+</li>
+<li><p>Null：null</p>
+</li>
+<li><p>Symbol（ES6）</p>
+</li>
+<li><p>BigInt（ES10）</p>
+</li>
+</ol>
+<p>引用数据类型（1个）：</p>
+<ul>
+<li>Object</li>
+</ul>
+<blockquote>
+<p>JS 中万物皆对象</p>
+</blockquote>
+<p>原始数据类型的数据直接存储在栈中，引用数据类型的数据存储在堆中，并把数据的起始地址存储在栈中。</p>
+<h2 id="undefined"><a href="#undefined" class="headerlink" title="undefined"></a>undefined</h2><p>如何得到安全的 undefined？</p>
+<p>JS 比较松散，可以定义名为 undefined 的变量，这就导致固有的 undefined 值发生变化。</p>
+<p>可以通过 void 获取安全的 undefined</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="BitInt"><a href="#BitInt" class="headerlink" title="BitInt"></a>BitInt</h2><p>BigInt值的定义：在一个整数字面量后面加 <code>n</code> 或使用构造函数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> theBiggestInt = <span class="number">9007199254740991n</span>;</span><br><span class="line"><span class="keyword">const</span> alsoHuge = <span class="title class_">BigInt</span>(<span class="number">9007199254740991</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="类型检测"><a href="#类型检测" class="headerlink" title="类型检测"></a>类型检测</h2><ul>
+<li><p>typeof</p>
+</li>
+<li><p>instanceof</p>
+</li>
+<li><p><code>Object.prototype.toString.call()</code></p>
+</li>
+<li><p>Array.isArray()：专门用于检测数组</p>
+</li>
+</ul>
+<p><strong>typeof</strong></p>
+<p>检测变量的前 3 位，最多 8 种。跟 JS 的数据类型并不一一对应。</p>
+<p>特殊点：</p>
+<ul>
+<li><p><strong>可以检测出 function，可见 JS 中函数的地位很高</strong>。</p>
+</li>
+<li><p>检测不出 null，null 表示空对象，检测为 <code>&quot;object&quot;</code>，感觉也是合理的。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>返回值</th>
+<th>被检测变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>number</td>
+<td>数字、NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>2</td>
+<td>string</td>
+<td>字符串</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>boolean</td>
+<td>布尔值</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>undefined</td>
+<td>undefined</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>symbol</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>object</td>
+<td>非函数对象、null</td>
+<td>null 也是对象</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>function</strong></td>
+<td>函数</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>返回值是小写字符串。</p>
+<p>typeof 的缺点：</p>
+<ul>
+<li>不能区分对象和数组</li>
+<li>不能判断对象的具体类型</li>
+</ul>
+<p><strong>instanceof</strong></p>
+<p>判断一个对象的原型链上是否有给定构造函数的原型（prototype）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">_instanceof</span>(<span class="params">obj, Fun</span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> proto = obj.<span class="property">__proto__</span>;</span><br><span class="line">    <span class="keyword">const</span> prototype = <span class="title class_">Fun</span>.<span class="property"><span class="keyword">prototype</span></span>;</span><br><span class="line">    <span class="keyword">while</span>(proto !== <span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(proto === prototype)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        proto = proto.<span class="property">__proto__</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">_instanceof</span>(obj, <span class="title class_">Array</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>Object.prototype.toString.call()</strong></p>
+<p>检测一个对象的<strong>内置类型</strong>，返回一个字符串，格式为 <code>[object 对象数据类型]</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// [object String]</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="comment">// [object Undefined]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="literal">undefined</span>));</span><br><span class="line"><span class="comment">// [object Null]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="literal">null</span>));</span><br><span class="line"><span class="comment">// [object Array]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>([]));</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://juejin.cn/post/6844903889280434184">判断js对象类型的多种方法，附详细说明 - 掘金 (juejin.cn)</a></p>
+<p><a href="https://www.cnblogs.com/bkzj/p/16871833.html">JavaScript判断数据类型的几种方式 - 如是。 - 博客园</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MjM5MDA2MTI1MA==&mid=2649123999&idx=2&sn=9ee48f9b56fbb8e3fbd3f8c420ab5020&chksm=be584b32892fc22479cd1f680a0666c285a2d4bfb70a19e50fa659951b9cefe4130cf28e6b2b&scene=27">https://mp.weixin.qq.com/s?__biz=MjM5MDA2MTI1MA==&amp;mid=2649123999&amp;idx=2&amp;sn=9ee48f9b56fbb8e3fbd3f8c420ab5020&amp;chksm=be584b32892fc22479cd1f680a0666c285a2d4bfb70a19e50fa659951b9cefe4130cf28e6b2b&amp;scene=27</a></p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript计时器、防抖、节流</title>
+    <url>/2022/12/17/JS%E8%AE%A1%E6%97%B6%E5%99%A8%E3%80%81%E8%8A%82%E6%B5%81%E3%80%81%E9%98%B2%E6%8A%96/</url>
+    <content><![CDATA[<h1 id="JavaScript计时器、防抖、节流"><a href="#JavaScript计时器、防抖、节流" class="headerlink" title="JavaScript计时器、防抖、节流"></a>JavaScript计时器、防抖、节流</h1><h2 id="计时器方法"><a href="#计时器方法" class="headerlink" title="计时器方法"></a>计时器方法</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 设置计时器，间隔一段时间循环执行</span></span><br><span class="line"><span class="built_in">setInterval</span>(<span class="keyword">function</span>, millisecond)</span><br><span class="line"><span class="comment">// 停止计时器</span></span><br><span class="line"><span class="built_in">clearInterval</span>(timer)</span><br><span class="line"><span class="comment">// 设置计时器，延时执行一次</span></span><br><span class="line"><span class="built_in">setTimeout</span>()</span><br><span class="line"><span class="comment">// 停止计时器</span></span><br><span class="line"><span class="built_in">clearTimeout</span>()</span><br></pre></td></tr></table></figure>
+
+<h2 id="防抖与节流"><a href="#防抖与节流" class="headerlink" title="防抖与节流"></a>防抖与节流</h2><p>防抖（debounce）：防止短时间内多次触发事件，只触发最后一次。</p>
+<p>节流（throttle）：防止短时间内多次触发事件，但是间隔事件内，还是需要不断触发。</p>
+<p>通过“计时器”可以实现防抖与节流。</p>
+<h3 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h3><p>触发事件会导致重新计时，计时走完才会执行一次操作。</p>
+<p>会重置定时器</p>
+<p>示例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> timer = <span class="literal">null</span>;</span><br><span class="line"><span class="variable language_">window</span>.<span class="property">onscroll</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (timer !== <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="built_in">clearTimeout</span>(timer)</span><br><span class="line">    &#125;</span><br><span class="line">    timer = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="comment">// 需要防抖的操作</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;防抖操作&quot;</span>);</span><br><span class="line">        timer = <span class="literal">null</span>;</span><br><span class="line">    &#125;, <span class="number">500</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>利用闭包封装防抖算法：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 传入一个业务函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">debounce</span>(<span class="params">fun</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// 闭包函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">            <span class="built_in">clearTimeout</span>(timer);</span><br><span class="line">            timer = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        timer = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">            <span class="title function_">fun</span>();</span><br><span class="line">        &#125;, <span class="number">500</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>真实场景：</p>
+<ul>
+<li><p>表单提交</p>
+</li>
+<li><p>搜索提示</p>
+</li>
+</ul>
+<h3 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h3><p>每隔一段时间才可以触发一次操作。其他时间的会被拦截。</p>
+<p>示例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 每隔一段时间才可以执行一次操作</span></span><br><span class="line"><span class="keyword">let</span> mark = <span class="literal">true</span>;</span><br><span class="line"><span class="variable language_">window</span>.<span class="property">onscroll</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span>(mark) &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>();</span><br><span class="line">            mark = <span class="literal">true</span>;</span><br><span class="line">        &#125;, <span class="number">500</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    mark = <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>利用闭包封装节流算法：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">throttle</span>(<span class="params">fun</span>) &#123;</span><br><span class="line">    <span class="comment">// 是否可以触发</span></span><br><span class="line">    <span class="keyword">let</span> mark = <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">// 闭包函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(mark) &#123;</span><br><span class="line">            <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">                <span class="comment">// 执行业务函数</span></span><br><span class="line">                <span class="title function_">fun</span>();</span><br><span class="line">                mark = <span class="literal">true</span>;</span><br><span class="line">            &#125;, <span class="number">500</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        mark = <span class="literal">false</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>真实场景：</p>
+<ul>
+<li>用在减小频率的地方</li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java注释</title>
+    <url>/2022/03/20/Java-Annotation/</url>
+    <content><![CDATA[<h1 id="Java注释"><a href="#Java注释" class="headerlink" title="Java注释"></a>Java注释</h1><p>从 JDK 5 开始支持，是一种对 MetaData 的支持。</p>
+<p>特殊标记，能够在编译、类加载、运行时被读取，并执行相应处理。</p>
+<h2 id="基本Annotation"><a href="#基本Annotation" class="headerlink" title="基本Annotation"></a>基本Annotation</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Override // 重写父类方法</span><br><span class="line">@Deprecated // 已过时</span><br><span class="line">@SuppressWarnings // 取消编译器警告</span><br><span class="line">@SafeVarargs</span><br><span class="line">@FunctionalInterface</span><br></pre></td></tr></table></figure>
+
+<h2 id="元Annotation"><a href="#元Annotation" class="headerlink" title="元Annotation"></a>元Annotation</h2><p>用于注释自定义 Annotation 的 Annotation</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Retention</span><br><span class="line">@Target</span><br><span class="line">@Documented</span><br><span class="line">@Inherited</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义Annotation"><a href="#自定义Annotation" class="headerlink" title="自定义Annotation"></a>自定义Annotation</h2><h3 id="提取-Annotation-信息"><a href="#提取-Annotation-信息" class="headerlink" title="提取 Annotation 信息"></a>提取 Annotation 信息</h3><p>从 Java 5 开始，java.lang.reflect 包提供了读取运行时 Annotation 的能力。</p>
+<p>所有程序元素都实现了 AnnotatedElement 接口，该接口定义了获取运行时 Annotation 的 API</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Annotation <span class="title function_">getAnnotation</span><span class="params">(Class annotationClass)</span></span><br><span class="line">Annotation[] getAnnotations()</span><br><span class="line"><span class="type">boolean</span> <span class="title function_">isAnnotationPresent</span><span class="params">(Class annotionClass)</span></span><br><span class="line">Annotation <span class="title function_">getAnnotationsByType</span><span class="params">(Class annotionClass)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>反射是获取注解的基础</p>
+</blockquote>
+<h2 id="编译时处理-Annotation"><a href="#编译时处理-Annotation" class="headerlink" title="编译时处理 Annotation"></a>编译时处理 Annotation</h2><p>使用 APT，对源文件进行检测，根据 Annotation 生成附属源文件。</p>
+<blockquote>
+<p>APT：Annotation Processing Tool</p>
+</blockquote>
+<p>javac 的 <code>-processor</code> 指定编译时注释处理器。</p>
+<p>javax.annotation.processing 的 Processor 接口</p>
+<p>AbstractProcessor 抽象类。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Node.js Buffer</title>
+    <url>/2023/05/01/Node-Buffer/</url>
+    <content><![CDATA[<h1 id="Node-js-Buffer"><a href="#Node-js-Buffer" class="headerlink" title="Node.js Buffer"></a>Node.js Buffer</h1><p>JavaScript 语言自身只有字符串数据类型，没有二进制数据类型。但在处理像TCP流或文件流时，必须使用到二进制数据。</p>
+<p>因此在 Node.js中，定义了一个 Buffer 类，该类用来创建一个专门存放二进制数据的缓存区。该缓存区对应 V8 堆内存之外的一块原始内存。</p>
+<p>Buffer是典型的JS与C++结合的模块。</p>
+<p>在Node启动时就会加载它，并挂载到global全局对象上。</p>
+<h2 id="Buffer对象"><a href="#Buffer对象" class="headerlink" title="Buffer对象"></a>Buffer对象</h2><p>Buffer对象类似于数组，存放的元素为16进制的两位数（00-FF），即0-255，占用8bit，一个字节。</p>
+<p>可通过<code>length</code>获得Buffer的长度（字节数）。</p>
+<h2 id="Buffer内存分配"><a href="#Buffer内存分配" class="headerlink" title="Buffer内存分配"></a>Buffer内存分配</h2><p>在C++层面申请内存，在JS中分配内存。</p>
+<p>slab分配机制</p>
+<p>是一种动态内存管理机制。</p>
+<p>slab是一块已申请的固定大小的内存区域。有3种状态：</p>
+<ul>
+<li><p>没有分配</p>
+</li>
+<li><p>部分分配</p>
+</li>
+<li><p>完全分配。</p>
+</li>
+</ul>
+<p>Node以8KB为界限区分Buffer是大对象还是小对象。</p>
+<p>8KB是每个slab的大小，在JS层面，以8KB为单位进行内存分配。</p>
+<p>小Buffer对象分配</p>
+<p>预先申请slab，事后分配。</p>
+<p>一个slab可以存储多个小Buffer对象。</p>
+<p>大Buffer对象分配</p>
+<p>直接分配一个SlowBuffer对象作为slab单元，Buffer对象独占这个slab，不用详细分配。</p>
+<blockquote>
+<p>SlowBuffer对象是在C++中定义的，使用C++层面的内存。</p>
+</blockquote>
+<h2 id="Buffer的API"><a href="#Buffer的API" class="headerlink" title="Buffer的API"></a>Buffer的API</h2><p>创建Buffer</p>
+<p>Buffer.alloc()</p>
+<p>Buffer.from()：数字数组、字符串、Buffer</p>
+<p>写入数据</p>
+<p>buffer.write()</p>
+<h2 id="Buffer与字符编码"><a href="#Buffer与字符编码" class="headerlink" title="Buffer与字符编码"></a>Buffer与字符编码</h2><p>通过使用显式的字符编码，就可以在 Buffer 实例与普通的 JavaScript 字符串之间进行相互转换。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> buf = <span class="title class_">Buffer</span>.<span class="title function_">from</span>(<span class="string">&#x27;runoob&#x27;</span>, <span class="string">&#x27;ascii&#x27;</span>);</span><br><span class="line"><span class="comment">// 输出 72756e6f6f62</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(buf.<span class="title function_">toString</span>(<span class="string">&#x27;hex&#x27;</span>));</span><br><span class="line"><span class="comment">// 输出 cnVub29i</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(buf.<span class="title function_">toString</span>(<span class="string">&#x27;base64&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>支持的字符串编码有限，常见的有：</p>
+<ul>
+<li><p>ASCII</p>
+</li>
+<li><p>UTF-8</p>
+</li>
+<li><p>Base64</p>
+</li>
+<li><p>Hex</p>
+</li>
+</ul>
+<h2 id="Buffer的拼接"><a href="#Buffer的拼接" class="headerlink" title="Buffer的拼接"></a>Buffer的拼接</h2><p>流传输时，获取的数据是一段一段的，就是一个Buffer对象。</p>
+<p>边传输边按字符串拼接Buffer对象容易导致乱码问题。英文不会乱码，因为是单字节的，中文是多字节的，可能会出现乱码。</p>
+<p>正确方法是：将多个小Buffer缓存起来，传输完成后，合并成一个大的Buffer，再转换成字符串。</p>
+<h2 id="Buffer与性能"><a href="#Buffer与性能" class="headerlink" title="Buffer与性能"></a>Buffer与性能</h2><p>Buffer在文件IO和网络IO中运用广泛。</p>
+<p>在应用中我们往往是操作字符串，但在网络传输中，都需要转换成Buffer，传输二进制数据。</p>
+<p>在Web应用中，字符转换成Buffer是时时刻刻发生的，提高String转Buffer的效率，可以提高网络吞吐率。</p>
+<p>（1）通过预先将静态内容转换成Buffer对象，可以减少CPU重复利用，不用每次响应执行一个Buffer转换。因此，在Web应用中，把动态内容和静态内容分离，静态内容预先转换成Buffer对象。</p>
+<p>（2）读取大文件时，highWaterMark越大，读取速度越快。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">fs.<span class="title function_">createReadStream</span>(path, &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>highWaterMark对Buffer内存的分配和使用有影响。</p>
+]]></content>
+      <categories>
+        <category>Node.js</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>Node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Node.js内存控制</title>
+    <url>/2023/04/20/Node-%E5%86%85%E5%AD%98%E6%8E%A7%E5%88%B6/</url>
+    <content><![CDATA[<h1 id="Node-js内存控制"><a href="#Node-js内存控制" class="headerlink" title="Node.js内存控制"></a>Node.js内存控制</h1><p>服务器端性能敏感，内存管理的好坏很关键。</p>
+<h2 id="V8的垃圾回收机制"><a href="#V8的垃圾回收机制" class="headerlink" title="V8的垃圾回收机制"></a>V8的垃圾回收机制</h2><h3 id="V8的内存限制"><a href="#V8的内存限制" class="headerlink" title="V8的内存限制"></a>V8的内存限制</h3><p>单个Node进程只能使用部分内存。</p>
+<p>64位系统约1.4G，32位系统约0.7G，这导致Node不能直接操作大内存对象。</p>
+<p>原因：</p>
+<ul>
+<li><p>V8引擎主要是服务于浏览器端的</p>
+</li>
+<li><p>垃圾回收机制的限制</p>
+</li>
+</ul>
+<h3 id="V8的对象分配"><a href="#V8的对象分配" class="headerlink" title="V8的对象分配"></a>V8的对象分配</h3><p>查看内存使用量：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">process.<span class="title function_">memoryUsage</span>();</span><br></pre></td></tr></table></figure>
+
+<p>返回值</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    rss<span class="punctuation">:</span> <span class="number">133454</span><span class="punctuation">,</span></span><br><span class="line">    heapTotal<span class="punctuation">:</span> <span class="number">71000</span><span class="punctuation">,</span></span><br><span class="line">    heapUsed<span class="punctuation">:</span> <span class="number">33200</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>堆内存是动态变化的，不足时会继续申请，直到超过V8限制。</p>
+<p>V8的限制是可以放宽的，在Node启动时传递参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 单位是MB</span><br><span class="line">node --max-old-space-size=1700 test.js</span><br><span class="line">// 单位是KB</span><br><span class="line">node --max-new-space-size=1024 test.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="V8的垃圾回收"><a href="#V8的垃圾回收" class="headerlink" title="V8的垃圾回收"></a>V8的垃圾回收</h3><p>垃圾回收策略：分代式垃圾回收机制。</p>
+<p>没有一种算法可以胜任所有场景，按对象的存活时间分代，匹配不同的回收算法。</p>
+<p>内存分代：</p>
+<ul>
+<li><p>新生代：存活时间短的对象，Scavenge回收算法</p>
+</li>
+<li><p>老生代：存活时间长</p>
+</li>
+</ul>
+<p><strong>Scavenge算法</strong></p>
+<p>以空间换时间的算法</p>
+<ul>
+<li><p>把堆内存分为两块，一个处于使用状态，一个处于闲置状态，</p>
+</li>
+<li><p>分配对象时，会放入使用空间中</p>
+</li>
+<li><p>当垃圾回收时，只把存活的对象复制到闲置区，清空活动区</p>
+</li>
+<li><p>此时，活跃区和闲置区互换</p>
+</li>
+<li><p>存在晋升的情况：即把对象移动到老生代内存中</p>
+</li>
+</ul>
+<p><strong>Mark-Sweep &amp; Mark-Compact算法</strong></p>
+<p>Mark-Sweep：</p>
+<ul>
+<li><p>标记阶段：遍历堆中的对象，标记活的对象</p>
+</li>
+<li><p>清除阶段：清除没有被标记的对象</p>
+</li>
+</ul>
+<p>Mark-Sweep会导致内存空间会出现不连续状态。</p>
+<p>Mark-Compact：基于Mark-Sweep</p>
+<ul>
+<li><p>标记阶段：同上</p>
+</li>
+<li><p>整理阶段：标记后，把活的对象移动到内存的一端</p>
+</li>
+<li><p>清除阶段：清除边界外的内存</p>
+</li>
+</ul>
+<p>Mark-Compact需要移动对象，效率较低。</p>
+<p>V8主要使用Mark-Sweep，内存不足时才使用Mark-Compact。</p>
+<p><strong>增量标记（Incremental Marking）</strong></p>
+<p>全停顿：垃圾回收时会暂停JS执行</p>
+<p>全停顿时间过长后导致卡顿。</p>
+<p>V8做了大量优化：</p>
+<ul>
+<li>增量标记：把一次停顿拆分成多次执行。</li>
+</ul>
+<h3 id="查看垃圾回收日志"><a href="#查看垃圾回收日志" class="headerlink" title="查看垃圾回收日志"></a>查看垃圾回收日志</h3><p>垃圾回收日志：启动参数<code>--trace_gc</code></p>
+<p>gc.log</p>
+<p>性能分析日志：<code>--prof</code></p>
+<p>v8.log </p>
+<p>Node提供了工具统计日志信息：tick-processor</p>
+<h2 id="高效使用内存"><a href="#高效使用内存" class="headerlink" title="高效使用内存"></a>高效使用内存</h2><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>JS中能形成作用域的有函数、with和全局作用域。</p>
+<p>标识符查找：沿着作用域链向上查找。</p>
+<p>全局作用域直到进程退出才会释放，所以全局变量引用的对象会常驻在老生代内存中，需要主动释放：</p>
+<ol>
+<li><p>delete</p>
+</li>
+<li><p>给全局变量重新赋值</p>
+</li>
+</ol>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>作用域链上的对象访问只能向上，外部不能访问内部作用域。</p>
+<p>实现外部访问内部变量的方法叫做“闭包”，高阶函数特性。</p>
+<p>闭包的实现：函数的返回值是一个匿名函数，匿名函数可以访问函数的内部变量，外部函数通过这个匿名函数就可以访问到内部函数的变量。</p>
+<p>闭包会导致匿名函数及其原始函数作用域得不到释放。</p>
+<h2 id="内存指标"><a href="#内存指标" class="headerlink" title="内存指标"></a>内存指标</h2><h3 id="查看内存使用情况"><a href="#查看内存使用情况" class="headerlink" title="查看内存使用情况"></a>查看内存使用情况</h3><p><strong>查看进程内存情况</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">process.memoryUsage()</span><br></pre></td></tr></table></figure>
+
+<p>rss：resident set size，驻留集合大小，进程的常驻内存部分</p>
+<p><strong>查看系统内存情况</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 系统全部内存</span><br><span class="line">os.totalmem()</span><br><span class="line">// 系统闲置内存</span><br><span class="line">os.freemem()</span><br></pre></td></tr></table></figure>
+
+<h3 id="堆外内存"><a href="#堆外内存" class="headerlink" title="堆外内存"></a>堆外内存</h3><p>进程的堆内存总是小于rss，这说明Node中的内存使用并非都是V8进行分配的。</p>
+<p>不是通过V8分配的内存——称为“堆外内存”</p>
+<ul>
+<li><p>V8的堆内存</p>
+</li>
+<li><p>Node的堆外内存</p>
+</li>
+</ul>
+<p>Buffer对象不经过V8的内存分配，也不会有堆内存的大小限制。这是因为，Node需要处理网络流和文件IO流，浏览器端一般不需要。</p>
+<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>内存泄漏的本质是：应当回收的对象出现意外没有被回收，常驻在老生代内存中。</p>
+<p>造成内存泄漏的原因：</p>
+<ul>
+<li><p>缓存</p>
+</li>
+<li><p>队列消费不及时</p>
+</li>
+<li><p>作用域未释放</p>
+</li>
+</ul>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>慎将内存当做缓存，把一个对象当做缓存，会让该对象常驻老生代内存，如果不限定大小、没有过期策略会导致内存占用无限增长。</p>
+<blockquote>
+<p>服务端程序是一个长时间运行程序，许多在浏览器、App等短时间运行程序中的可容忍的不良行为会持续放大，最终导致程序崩溃。</p>
+</blockquote>
+<p>缓存限制策略</p>
+<p>LRU算法</p>
+<blockquote>
+<p>模块是常驻老生代内存的，设计时需要小心内存泄漏</p>
+</blockquote>
+<p>进程外内存</p>
+<p>使用专门的缓存软件实现缓存，如Radis、Memcached，好处：</p>
+<ul>
+<li><p>减少常驻内存的对象数量</p>
+</li>
+<li><p>可以跨进程共享缓存</p>
+</li>
+</ul>
+<h3 id="队列问题"><a href="#队列问题" class="headerlink" title="队列问题"></a>队列问题</h3><p>队列在消费者-生产者模型中充当中间产物，一般情况下，消费速度远大于生产速度，不会出现内存泄漏，但一旦消费速度低于生产速度，就会形成堆积。</p>
+<blockquote>
+<p>数据库的写入效率低于文件直接写入</p>
+</blockquote>
+<p>解决方案：</p>
+<ul>
+<li><p>采用消费速度更快的技术</p>
+</li>
+<li><p>监控队列长度报警</p>
+</li>
+<li><p>给调用提供超时机制和拒绝机制</p>
+</li>
+</ul>
+<h3 id="内存泄漏排查"><a href="#内存泄漏排查" class="headerlink" title="内存泄漏排查"></a>内存泄漏排查</h3><p>常见工具：</p>
+<ul>
+<li><p>node-heapdump</p>
+</li>
+<li><p>node-mtrace</p>
+</li>
+<li><p>node-memwatch</p>
+</li>
+</ul>
+<h2 id="大内存应用"><a href="#大内存应用" class="headerlink" title="大内存应用"></a>大内存应用</h2><p>存在操作大文件的场景</p>
+<p>（1）通过流的方式读写大文件：stream模块</p>
+<p>（2）如果不进行字符层面的操作，可使用纯粹的Buffer操作</p>
+]]></content>
+      <categories>
+        <category>Node.js</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>Node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Node.js异步IO</title>
+    <url>/2023/04/03/Node-%E5%BC%82%E6%AD%A5IO/</url>
+    <content><![CDATA[<h1 id="Node-js异步IO"><a href="#Node-js异步IO" class="headerlink" title="Node.js异步IO"></a>Node.js异步IO</h1><p>异步早就存在于操作系统的底层，通过信号量、消息等方式应用。</p>
+<p>与Node的事件驱动、异步IO设计理念比较相近的一个产品是Nginx。</p>
+<h2 id="为什么要异步IO"><a href="#为什么要异步IO" class="headerlink" title="为什么要异步IO"></a>为什么要异步IO</h2><p>原因：Node是面向网络设计的。</p>
+<p>网络请求是一个耗时操作，同步网络请求会导致程序处于等待卡死状态，用户体验差。</p>
+<p>计算机将组件进行了抽象，分为IO设备和计算设备。</p>
+<p>处理一组任务的方案：</p>
+<ul>
+<li><p>单线程串行执行：易于编写，但是性能差。</p>
+</li>
+<li><p>多线程并发执行：性能一般较好；但多线程开销大，且需要处理锁、状态同步等问题，编写难度大。</p>
+</li>
+</ul>
+<p>Node的方案是：利用单线程避免死锁、同步等问题；利用异步IO让单线程不会阻塞，更好地利用CPU。</p>
+<h2 id="异步IO的现状"><a href="#异步IO的现状" class="headerlink" title="异步IO的现状"></a>异步IO的现状</h2><p>异步IO不是Node首创。</p>
+<p>异步&#x2F;同步和阻塞&#x2F;非阻塞是两回事。</p>
+<p>操作系统内核对于IO只有两种方式：阻塞与非阻塞。</p>
+<p>阻塞IO：操作系统处理IO时，会等待IO结束，获得数据后再返回。</p>
+<p>非阻塞IO：操作系统启动IO后，立即无数据返回。</p>
+<blockquote>
+<p>操作系统把输入输出设备抽象为文件，在进行IO操作时，通过文件描述符进行管理，先打开文件描述符，在根据文件描述符进行数据的读写。</p>
+</blockquote>
+<p>非阻塞IO返回后，CPU的时间片段可以用来处理其他事务，性能更好，但又一个问题：如何获取IO的完整数据？应用程序需要重复调用IO操作来确认IO是否完成，称为“轮询”技术。这也会浪费CPU资源。</p>
+<p>现存的轮询技术：</p>
+<ul>
+<li><p>read</p>
+</li>
+<li><p>select</p>
+</li>
+<li><p>poll</p>
+</li>
+<li><p>epoll：Linux系统，IO事件通知机制</p>
+</li>
+<li><p>kqueue：FreeBCD系统</p>
+</li>
+</ul>
+<h3 id="理想的非阻塞异步IO"><a href="#理想的非阻塞异步IO" class="headerlink" title="理想的非阻塞异步IO"></a>理想的非阻塞异步IO</h3><p>应用程序发起非阻塞调用，无需轮询，IO完成后，系统内核通过事件或信号将数据传递给应用程序。</p>
+<h3 id="现实的异步IO"><a href="#现实的异步IO" class="headerlink" title="现实的异步IO"></a>现实的异步IO</h3><p>现实：通过线程池模拟异步IO。让一个线程进行计算处理，让部分其他线程进行阻塞IO或非阻塞IO加轮询技术来完成数据，通过线程间通信将IO得到的数据传递给计算线程。</p>
+<p>Windows系统：IOCP</p>
+<p>Linux系统：自定义线程池</p>
+<p>IO包括：文件读写、硬件、套接字等。</p>
+<p>在Node中，所谓的单线程只是JS执行在单线程，完成IO任务的另有线程池。</p>
+<h2 id="Node的异步IO"><a href="#Node的异步IO" class="headerlink" title="Node的异步IO"></a>Node的异步IO</h2><p>Node的异步IO模型：</p>
+<ul>
+<li><p>事件循环</p>
+</li>
+<li><p>观察者</p>
+</li>
+<li><p>请求对象</p>
+</li>
+<li><p>IO线程池</p>
+</li>
+</ul>
+<p>事件循环</p>
+<p>在进程启动时，Node就会创建一个死循环，每执行一次循环称为“Tick”。</p>
+<p>观察者</p>
+<p>在每个Tick中，判断是否有事件需要处理。每个循环中有一个或多个观察者，观察者收集事件，对事件进行分类，事件循环则从观察者中获取事件并处理。</p>
+<p>请求对象</p>
+<p>当JS发起一个异步调用时，Node会创建一个“请求对象”，封装参好数和回调，然后推入线程池中等待执行，至此，JS调用返回，继续执行后续JS代码。</p>
+<p>线程池中的IO操作调用完毕后，会把获得的数据存储到请求对象的result属性中，然后通知IOCP记录状态，并释放线程。</p>
+<p>在每次Tick时，事件循环的IO观察者会检查IOCP的状态，如果有已完成的请求，就会把这些请求对象加入到观察者的队列中，等待被取出当做事件处理。</p>
+<p>回调函数的执行：取出请求对象，提取请求对象的result和oncomplete_sym属性，执行<code>oncomplete_sym(result)</code></p>
+<h2 id="非IO的异步API"><a href="#非IO的异步API" class="headerlink" title="非IO的异步API"></a>非IO的异步API</h2><p>Node中存在一些与IO无关的异步API。</p>
+<h3 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h3><ul>
+<li><p>setTimeout()</p>
+</li>
+<li><p>setInterval()</p>
+</li>
+</ul>
+<p>不需要IO线程池参与。</p>
+<p>流程：创建定时器，插入到“定时器观察者”内部的红黑树中，每次Tick，都会检查定时器对象是否超时，超时就会调用定时器的回调函数。</p>
+<p>存在的问题：不精确。</p>
+<h3 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick()"></a>process.nextTick()</h3><p>调用定时器需要动用红黑树、创建对象、迭代等操作，比较浪费性能。</p>
+<p>想要立即异步执行一个任务，使用 <code>process.nextTick()</code> 方法。该方法只会将回调函数放入队列中，在下一次Tick中取出执行。</p>
+<h3 id="setImmediate"><a href="#setImmediate" class="headerlink" title="setImmediate()"></a>setImmediate()</h3><p>延迟执行，和 <code>process.nextTick()</code> 类似。但 <code>process.nextTick()</code> 会优先执行。</p>
+<p><code>process.nextTick()</code> 的回调保存在一个数组中，每轮Tick会全部调用。</p>
+<p><code>setImmediate()</code> 的回调则是保存在一个链表中，每轮Tick只会调用一个。</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>]]></content>
+      <categories>
+        <category>Node.js</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>Node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Node.js网络编程</title>
+    <url>/2023/04/02/Node-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="Node-js网络编程"><a href="#Node-js网络编程" class="headerlink" title="Node.js网络编程"></a>Node.js网络编程</h1><p>在Web领域，大多数编程语言需要专门的Web服务器容器，如ASP需要IIS服务器，Java需要Tomcat服务器，PHP需要Apache服务器。Node则不需要额外的容器。</p>
+<p>Node提供了多个模块：</p>
+<ul>
+<li><p>net：TCP</p>
+</li>
+<li><p>dgram：UDP</p>
+</li>
+<li><p>http：HTTP</p>
+</li>
+<li><p>https：HTTPS</p>
+</li>
+</ul>
+<h2 id="构建TCP服务"><a href="#构建TCP服务" class="headerlink" title="构建TCP服务"></a>构建TCP服务</h2><p>TCP：传输控制协议。传输层</p>
+<p>大多数网络应用是基于TCP搭建的。</p>
+<p>创建会话，服务端和客户端分别提供一个套接字，实现连接。</p>
+<p>创建TCP服务器端：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> net = <span class="built_in">require</span>(<span class="string">&#x27;net&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> server = net.<span class="title function_">createServer</span>(<span class="keyword">function</span>(<span class="params">socket</span>)&#123;</span><br><span class="line">    socket.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="keyword">function</span>(<span class="params">data</span>)&#123;</span><br><span class="line">        <span class="comment">// 接收到数据</span></span><br><span class="line">        socket.<span class="title function_">write</span>(<span class="string">&#x27;接收到数据：&#x27;</span> + data);</span><br><span class="line">    &#125;);</span><br><span class="line">    socket.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="comment">// 连接断开</span></span><br><span class="line">        socket.<span class="title function_">write</span>(<span class="string">&#x27;连接断开&#x27;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    socket.<span class="title function_">write</span>(<span class="string">&#x27;Hello!!!&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 监听接口</span></span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">8124</span>, <span class="title function_">fcuntion</span>(<span class="params">socket</span>)&#123;</span><br><span class="line">    <span class="comment">// 新的连接</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>TCP服务事件：</p>
+<ul>
+<li><p>服务器事件</p>
+</li>
+<li><p>连接事件</p>
+</li>
+</ul>
+<p>服务器可以同时与多个客户端保持连接，每个连接都是可读可写的Stream对象。</p>
+<p>TCP对小数据包有优化策略：Nagle算法。合并成一个大数据包再发送，可以导致延迟，Node默认是开启的，可以关闭。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">socket.<span class="title function_">setNoDelay</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="构建UDP服务"><a href="#构建UDP服务" class="headerlink" title="构建UDP服务"></a>构建UDP服务</h2><p>UDP：用户数据包服务。不是面向连接的。</p>
+<p>在UDP中，一个socket可以与多个UDP服务通信。</p>
+<p>适用于允许丢包的场景，如音视频。</p>
+<p>创建UDP套接字，既可以作为客户端发送数据，也可以作为服务器接收数据。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> dgram = <span class="built_in">require</span>(<span class="string">&#x27;dgram&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> socket = dgram.<span class="title function_">createSocket</span>(<span class="string">&#x27;udp4&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>接收数据</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 监听接收的数据</span></span><br><span class="line">socket.<span class="title function_">on</span>(<span class="string">&#x27;message&#x27;</span>, <span class="keyword">function</span>(<span class="params">msg, rinfo</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;接收到：&#x27;</span>, msg);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;来自：&#x27;</span> + rinfo.<span class="property">address</span>)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 监听开始事件</span></span><br><span class="line">socket.<span class="title function_">on</span>(<span class="string">&#x27;listen&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 设置接收端口</span></span><br><span class="line">sokcet.<span class="title function_">bind</span>(<span class="number">41234</span>);</span><br></pre></td></tr></table></figure>
+
+<p>发送数据</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> msg = <span class="title class_">Buffer</span>.<span class="title function_">form</span>(<span class="string">&#x27;Hello&#x27;</span>);</span><br><span class="line"><span class="comment">// 给指定主机发送数据</span></span><br><span class="line">socket.<span class="title function_">send</span>(msg, <span class="number">0</span>, msg.<span class="property">length</span>, <span class="number">41234</span>, <span class="string">&#x27;localhost&#x27;</span>, <span class="keyword">function</span>(<span class="params">err, bytes</span>)&#123;</span><br><span class="line">    <span class="comment">// 发送完成回调</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="构建HTTP服务"><a href="#构建HTTP服务" class="headerlink" title="构建HTTP服务"></a>构建HTTP服务</h2><p>TCP和UDP都是传输层协议，用于构建高效的网络应用。如果支持普通的应用，使用应用层协议就绰绰有余，如 HTTP。</p>
+<p>HTTP构建在TCP之上</p>
+<p>HTTP报文：报文头+报文体</p>
+<p>TCP服务以connection为单位，HTTP服务以request为单位，一个TCP会话可以用于多次HTTP请求和响应。</p>
+<p><strong>http模块</strong>是将connection到request的过程进行了封装。</p>
+<h3 id="HTTP服务端"><a href="#HTTP服务端" class="headerlink" title="HTTP服务端"></a>HTTP服务端</h3><p>ServerRequest</p>
+<p>ServerResponse</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> server = http.<span class="title function_">createServer</span>(<span class="keyword">function</span>(<span class="params">req, res</span>)&#123;</span><br><span class="line">    <span class="comment">// req是请求报文</span></span><br><span class="line">    <span class="comment">// req.method</span></span><br><span class="line">    <span class="comment">// req.url</span></span><br><span class="line">    <span class="comment">// 写入响应头</span></span><br><span class="line">    res.<span class="title function_">writeHead</span>(<span class="number">200</span>, &#123;</span><br><span class="line">        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;text/plain&#x27;</span> </span><br><span class="line">    &#125;);</span><br><span class="line">    res.<span class="title function_">write</span>();</span><br><span class="line">    res.<span class="title function_">end</span>();</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// </span></span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">1337</span>, <span class="string">&#x27;127.0.0.1&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>请求报文的主体是一个只读流对象，响应报文的主体是一个可写流对象。</p>
+<p>HTTP服务的事件</p>
+<ul>
+<li><p>connection：客户端与服务端建立连接时触发</p>
+</li>
+<li><p>request：在解析出请求头时触发</p>
+</li>
+<li><p>close：服务器关闭时（所有连接都断开）触发</p>
+</li>
+<li><p>connect：当客户端发起CONNECT请求时触发</p>
+</li>
+<li><p>checkContinue：当客户端发送头部带<code>Expect: 100-continue</code>的请求时触发</p>
+</li>
+<li><p>upgrade：当客户端要求升级协议时触发，与WebSocket有关</p>
+</li>
+<li><p>clientError</p>
+</li>
+</ul>
+<h3 id="HTTP客户端"><a href="#HTTP客户端" class="headerlink" title="HTTP客户端"></a>HTTP客户端</h3><p>ClientRequest</p>
+<p>ClientResponse</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>);</span><br><span class="line"><span class="comment">// 请求头内容</span></span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">    <span class="attr">port</span>: <span class="number">1334</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">    <span class="attr">path</span>:<span class="string">&#x27;/&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 创建请求ClientRequest</span></span><br><span class="line"><span class="keyword">var</span> req = http.<span class="title function_">request</span>(options, <span class="keyword">function</span>(<span class="params">res</span>)&#123;</span><br><span class="line">    <span class="comment">// 响应内容</span></span><br><span class="line">    res.<span class="title function_">setEncoding</span>(<span class="string">&#x27;utf8&#x27;</span>);</span><br><span class="line">    res.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="keyword">function</span>(<span class="params">chunk</span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line">req.<span class="title function_">end</span>();</span><br></pre></td></tr></table></figure>
+
+<p>http模块包含一个默认的客户端代码对象http.globalAgent，对连接进行管理，底层是线程池，对同一个服务端的请求最多创建5个连接（同浏览器限制相同）</p>
+<p>HTTP客户端事件</p>
+<ul>
+<li><p>response：得到服务端响应</p>
+</li>
+<li><p>socket：当底层连接分配给当前请求时</p>
+</li>
+<li><p>connect：当服务端响应了CONNECT请求时</p>
+</li>
+<li><p>upgrade：当服务端响应了<code>101 Switching Protocols</code>状态时</p>
+</li>
+<li><p>continue：当服务端响应了<code>100 Continue</code>状态时</p>
+</li>
+</ul>
+<h2 id="构建WebSocket服务"><a href="#构建WebSocket服务" class="headerlink" title="构建WebSocket服务"></a>构建WebSocket服务</h2><p><strong>Node没有内置WebSocket库，社区的ws模块封装了WebSocket底层实现。</strong></p>
+<p>WebSocket相对HTTP的好处：</p>
+<ul>
+<li><p>客户端与服务端只建立一个TCP连接</p>
+</li>
+<li><p>服务端可以推送数据到客户端，双向通信</p>
+</li>
+<li><p>协议头更轻量</p>
+</li>
+</ul>
+<p>WebSocket客户端</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> socket = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(<span class="string">&#x27;ws://127.0.0.1:12100/updates&#x27;</span>);</span><br><span class="line"><span class="comment">// 建立连接</span></span><br><span class="line">socket.<span class="title function_">onopen</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">// 向服务端发送数据</span></span><br><span class="line">    socket.<span class="title function_">send</span>();</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 接收服务端事件</span></span><br><span class="line">socket.<span class="title function_">onmessage</span>(<span class="keyword">function</span>(<span class="params">event</span>)&#123;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>WebSocket协议分为：握手和数据传输</p>
+<p>通过HTTP发送升级协议请求，特有协议头：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Upgrade: websocket,</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Key: </span><br><span class="line">Sec-WebSocket-Protocol: char, superchat</span><br><span class="line">Sec-WebSocket-Version: 13</span><br></pre></td></tr></table></figure>
+
+<p>重点：<code>Sec-WebSocket-Key</code>的值用于校验。</p>
+<p>（1）客户端随机生成一个Base64编码的字符串key。</p>
+<p>（2）服务端拿到该字符串后，与一串特定字符串拼接，计算SHA1散列值，再进行Base64编码，放在响应的<code>Sec-WebSocket-Accept</code>中。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Base64(sha1(key+&#x27;xxx&#x27;))</span><br></pre></td></tr></table></figure>
+
+<p>（3）客户端通过响应拿到返回值，进行校验</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Base64(sha1(key+&#x27;xxx&#x27;)) == accept</span><br></pre></td></tr></table></figure>
+
+<p>WeBSocket数据帧协议</p>
+<p>客户端需要对发送的数据帧进行掩码处理，服务端发送给客户端的则不能做掩码处理。</p>
+<p>每8位（1个字节）为一列。</p>
+<p>每一位的意义：</p>
+<ul>
+<li><p>opcode：4位操作码，用来描述当前帧</p>
+</li>
+<li><p>masked：1位，是否进行掩码处理，客户端为1需要掩码，服务端为0不需要掩码</p>
+</li>
+<li><p>payload length：7或7+16或7+64位，标识数据长度</p>
+</li>
+<li><p>masking key：32位，掩码</p>
+</li>
+<li><p>payload data：位数为8的倍数，数据</p>
+</li>
+</ul>
+<p>发送数据时，需要构造一个或多个数据帧协议报文。</p>
+<p>客户端发送报文时，需要使用掩码对二进制进行加密，服务端收到后，需要进行解密。</p>
+<p>服务端发送报文时，无需掩码。</p>
+<h2 id="网络服务与安全"><a href="#网络服务与安全" class="headerlink" title="网络服务与安全"></a>网络服务与安全</h2><p>SSL（Secure Sockets Layer，安全套接协议）很早就提出了，是一种安全协议，在传输层对网络连接进行加密和解密，应用层是透明的，后来标准化为 TLS（Transport Layer Security）安全传输层协议。</p>
+<p>Node提供了3个安全方面的模块：</p>
+<ul>
+<li><p>crypto：各种加密算法</p>
+</li>
+<li><p>tls：功能与net模块类似，但建立在 TLS&#x2F;SSL 加密的 TCP 连接上</p>
+</li>
+<li><p>https：功能和http模块类似，只是建立在安全连接上</p>
+</li>
+</ul>
+<h3 id="TLS-SSL"><a href="#TLS-SSL" class="headerlink" title="TLS&#x2F;SSL"></a>TLS&#x2F;SSL</h3><p>基于非对称加密</p>
+<p>客户端和服务端都有自己的公钥&#x2F;私钥。公钥加密要发送的数据，私钥解密接收到的数据。</p>
+<p>在建立安全传输之前，客户端和服务端需要互换公钥。给谁发送消息就用谁的公钥进行加密，对方接收到使用自己的私钥就可以解密。</p>
+<p>Node的底层采用openssl来实现TLS&#x2F;SSL。</p>
+<p>生成私钥</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl genrsa</span><br></pre></td></tr></table></figure>
+
+<p>生成公钥</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl rsa</span><br></pre></td></tr></table></figure>
+
+<p>中间人攻击：在客户端和服务器交换公钥时，攻击者插入其中，同时扮演客户端和服务端，获得双方的公钥，这样就可以解密拿到双方的真实数据。</p>
+<p>为了解决中间人攻击，TLS&#x2F;SSL引入了“数字证书”。</p>
+<p><strong>数字证书</strong></p>
+<p>主要包含：</p>
+<ul>
+<li><p>服务器基本信息</p>
+</li>
+<li><p><strong>服务器公钥</strong></p>
+</li>
+<li><p>认证机构信息</p>
+</li>
+<li><p><strong>认证机构的签名</strong></p>
+</li>
+</ul>
+<p>引入了一个第三方——CA（Certificate Authority，证书认证机构），CA的作用是为站点颁发证书。</p>
+<p>通过正规的证书机构颁发证书需要付出一定的精力和费用，大部分小公司采用“自签名证书”，即自己扮演CA，给自己的服务器颁发证书。</p>
+<p>服务器端：</p>
+<ul>
+<li><p>通过私钥生成CSR（Certificate Signing Request，证书签名请求）</p>
+</li>
+<li><p>把CSR交给CA</p>
+</li>
+</ul>
+<p>CA端颁发证书：</p>
+<ul>
+<li><p>生成自己的私钥key</p>
+</li>
+<li><p>生成自己的csr</p>
+</li>
+<li><p>生成自己的证书crt</p>
+</li>
+<li><p>用自己的私钥key和证书crt给服务器的csr生成服务器的crt</p>
+</li>
+<li><p>把服务器crt交给服务器</p>
+</li>
+</ul>
+<p>客户端连接前会获取服务器证书，并通过CA证书验证服务端证书的真伪。</p>
+<p>知名CA机构的证书一般预装在浏览器中，自签名证书客户端需要获取。</p>
+<h3 id="TLS服务"><a href="#TLS服务" class="headerlink" title="TLS服务"></a>TLS服务</h3><p>创建服务器端</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> tls = <span class="built_in">require</span>(<span class="string">&#x27;tls&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="comment">// 服务器私钥</span></span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/server.key&#x27;</span>),</span><br><span class="line">    <span class="comment">// 服务器证书</span></span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/server.cert&#x27;</span>),</span><br><span class="line">    <span class="attr">requestCert</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// CA证书</span></span><br><span class="line">    <span class="attr">ca</span>: [fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/ca.cert&#x27;</span>)]</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> server = tls.<span class="title function_">createServer</span>(options, <span class="keyword">function</span>(<span class="params">stream</span>))</span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">8000</span>, <span class="keyword">function</span>)</span><br></pre></td></tr></table></figure>
+
+<p>创建客户端</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> tls = <span class="built_in">require</span>(<span class="string">&#x27;tls&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="comment">// 客户端私钥</span></span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/server.key&#x27;</span>),</span><br><span class="line">    <span class="comment">// 客户端证书</span></span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/server.cert&#x27;</span>),</span><br><span class="line">    <span class="comment">// CA证书</span></span><br><span class="line">    <span class="attr">ca</span>: [fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/keys/ca.cert&#x27;</span>)]</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> stream = tls.<span class="title function_">connect</span>(<span class="number">8000</span>, options, <span class="keyword">function</span>)</span><br><span class="line">stream.<span class="title function_">setEncoding</span>(<span class="string">&#x27;uft8&#x27;</span>)</span><br><span class="line">stream.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="keyword">function</span>);</span><br><span class="line">stream.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="keyword">function</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="HTTPS服务"><a href="#HTTPS服务" class="headerlink" title="HTTPS服务"></a>HTTPS服务</h3><p>HTTPS服务是工作在TLS&#x2F;SSL上的HTTP。</p>
+<p>服务端需要准备私钥和签名证书。</p>
+<p>HTTPS服务端</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/server.key&#x27;</span>),</span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/server.cert&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line">https.<span class="title function_">createServer</span>(options, <span class="keyword">function</span>(<span class="params">req, res</span>)&#123;</span><br><span class="line">    res.<span class="title function_">writeHead</span>()</span><br><span class="line">    res.<span class="title function_">end</span>()</span><br><span class="line">&#125;).<span class="title function_">listen</span>(<span class="number">8000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>HTTPS客户端</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">    <span class="attr">port</span>: <span class="number">8000</span>,</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">    <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/client.key&#x27;</span>),</span><br><span class="line">    <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/client.cert&#x27;</span>),</span><br><span class="line">    <span class="attr">ca</span>: [fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;./keys/ca.cert&#x27;</span>)]</span><br><span class="line">&#125;</span><br><span class="line">options.<span class="property">agent</span> = <span class="keyword">new</span> https.<span class="title class_">Agent</span>(options)</span><br><span class="line"><span class="keyword">var</span> req = https.<span class="title function_">request</span>(options, <span class="keyword">function</span>(<span class="params">res</span>)&#123;&#125;)</span><br><span class="line">req.<span class="title function_">end</span>()</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>Node.js</tag>
+        <tag>后端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot常用注解</title>
+    <url>/2023/08/25/Spring%E7%B3%BB%E5%88%97%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="SpringBoot常用注解"><a href="#SpringBoot常用注解" class="headerlink" title="SpringBoot常用注解"></a>SpringBoot常用注解</h1><h2 id="组件相关"><a href="#组件相关" class="headerlink" title="组件相关"></a>组件相关</h2><p><code>@Controller</code> 和 <code>@Service</code> 都派生于 <code>@Component</code>。</p>
+<p>SpringBoot 中的组件扫描功能会识别到这些注解。</p>
+<h3 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h3><p>该注解是万能的注解</p>
+<p>通常加在配置类上</p>
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="@Controller"></a>@Controller</h3><p>修饰控制器层组件</p>
+<p>接收请求，对请求进行分发</p>
+<p>可以跳转到模板页面。</p>
+<p>而 <code>@RestController</code> 只能返回实体对象，不能跳转到模板页面。</p>
+<h3 id="Service"><a href="#Service" class="headerlink" title="@Service"></a>@Service</h3><p>修饰业务层组件</p>
+<h3 id="Repository"><a href="#Repository" class="headerlink" title="@Repository"></a>@Repository</h3><p>用于修饰 dao 层组件</p>
+<p>专注于系统数据的处理。</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><h3 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h3><blockquote>
+<p>auto wired：自动联线</p>
+</blockquote>
+<p>根据对象的 <strong>类型</strong> 自动注入依赖对象</p>
+<h3 id="Resource"><a href="#Resource" class="headerlink" title="@Resource"></a>@Resource</h3><p>默认会根据对象的 <strong>名称</strong> 自动注入依赖对象</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Resource(name = &quot;umsAdminServiceImpl&quot;)</span></span><br><span class="line"><span class="keyword">private</span> UmsAdminService adminService;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Qualifier"><a href="#Qualifier" class="headerlink" title="@Qualifier"></a>@Qualifier</h3><p>当同一个对象有多个实例可以注入时</p>
+<h2 id="实例与生命周期"><a href="#实例与生命周期" class="headerlink" title="实例与生命周期"></a>实例与生命周期</h2><h3 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h3><p>用于修饰方法，标识该方法会创建一个 Bean 实例，并交给 Spring 容器来管理。</p>
+<h3 id="Scope"><a href="#Scope" class="headerlink" title="@Scope"></a>@Scope</h3><p>用于声明一个 Spring Bean 实例的作用域</p>
+<h2 id="SpringMVC-相关"><a href="#SpringMVC-相关" class="headerlink" title="SpringMVC 相关"></a>SpringMVC 相关</h2><h3 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="@RequestMapping"></a>@RequestMapping</h3><p>用于将 Web 请求路径映射到处理类的方法上。</p>
+<p>当用于类上时，可以统一类中所有方法的路由路径。</p>
+<h3 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h3><p>该注解常用来处理 <code>content-type</code> 不是默认的 <code>application/x-www-form-urlcoded</code> 编码的内容。</p>
+<p>一般是用来处理 <code>application/json</code> 类型</p>
+<h3 id="ResponseBody"><a href="#ResponseBody" class="headerlink" title="@ResponseBody"></a>@ResponseBody</h3><p>将控制器方法返回的对象通过适当的转换器转换为指定的格式之后，写入到响应对象的 body 中，通常用来返回 JSON 或 XML 数据。</p>
+<h3 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h3><p>用于接收请求参数</p>
+<ul>
+<li><p>GET路径参数</p>
+</li>
+<li><p>表单参数</p>
+</li>
+<li><p>文件上传请求的部分参数</p>
+</li>
+</ul>
+<h3 id="RequestPart"><a href="#RequestPart" class="headerlink" title="@RequestPart"></a>@RequestPart</h3><p>用于接收文件上传中的文件参数</p>
+<h2 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h2><h3 id="Configuration"><a href="#Configuration" class="headerlink" title="@Configuration"></a>@Configuration</h3><p>用于声明一个 Java 形式的配置类，SpringBoot 推荐使用 Java 配置，在该类中声明配置将被 SpringBoot 的组件扫描功能扫描到。</p>
+<h3 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h3><p>用于表示 SpringBoot 应用中的启动类</p>
+<h3 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h3><p>用于把配置文件中配置好的属性注入到类中。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtTokenUtil</span> &#123;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.secret&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String secret;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.expiration&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long expiration;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.tokenHead&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String tokenHead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ConfigurationProperties"><a href="#ConfigurationProperties" class="headerlink" title="@ConfigurationProperties"></a>@ConfigurationProperties</h3><p>用于批量注入外部配置</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;secure.ignored&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IgnoreUrlsConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="AOP相关"><a href="#AOP相关" class="headerlink" title="AOP相关"></a>AOP相关</h2><p>@Aspect</p>
+<p>@Before</p>
+<p>@After</p>
+<h2 id="测试相关"><a href="#测试相关" class="headerlink" title="测试相关"></a>测试相关</h2><p>@SpringBootTest</p>
+<p>@Test</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>后端</tag>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue3 Hooks</title>
+    <url>/2023/12/01/Vue-Vue3Hooks/</url>
+    <content><![CDATA[<h1 id="Vue3-Hooks"><a href="#Vue3-Hooks" class="headerlink" title="Vue3 Hooks"></a>Vue3 Hooks</h1><p>灵感借鉴自 React Hooks，但底层原理不同，Vue 基于自身细粒度的响应性系统。</p>
+<blockquote>
+<p>hook：钩子</p>
+</blockquote>
+<p>hooks 是一个函数，被称为“钩子函数”，该函数会和 Vue 组件的特定 API 配合使用，Vue 会在特定时机调用该函数。</p>
+<p>特定的时机指：</p>
+<ul>
+<li><p>生命周期函数执行时</p>
+</li>
+<li><p>某个值改变时</p>
+</li>
+</ul>
+<p>hooks 的优点：</p>
+<ul>
+<li><p>便于代码复用</p>
+</li>
+<li><p>便于整个逻辑的封装</p>
+</li>
+</ul>
+<p>hooks 相当于组件级别的逻辑封装，比 Vue2 中的 mixins 更加方便好用。</p>
+<h2 id="自定义-hooks-函数"><a href="#自定义-hooks-函数" class="headerlink" title="自定义 hooks 函数"></a>自定义 hooks 函数</h2><p>约定：hook 文件以 use 开头。</p>
+<p>官方示例，该函数可以很方便的给页面添加鼠标监听逻辑。</p>
+<p>创建 mouse.js 文件</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 导入Vue组件级相关API</span></span><br><span class="line"><span class="keyword">import</span> &#123; ref, onMounted, onUnmounted &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"><span class="comment">// hook函数命名以use开头</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">useMouse</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 响应式数据</span></span><br><span class="line">    <span class="keyword">const</span> x = <span class="title function_">ref</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">const</span> y = <span class="title function_">ref</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 记录鼠标移动坐标</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">update</span>(<span class="params">event</span>)&#123;</span><br><span class="line">        x.<span class="property">value</span> = event.<span class="property">pageX</span>;</span><br><span class="line">        y.<span class="property">value</span> = event.<span class="property">pageY</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 监听组件生命周期</span></span><br><span class="line">    <span class="comment">// 添加和移除鼠标移动事件监听器</span></span><br><span class="line">    <span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;mousemove&#x27;</span>, update));</span><br><span class="line">    <span class="title function_">onUnmounted</span>(<span class="function">() =&gt;</span> <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&#x27;mousemove&#x27;</span>, update));</span><br><span class="line">    <span class="comment">// 返回普通对象，内部数据是响应式的，便于解构</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        x, y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在组件中使用</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    Mouse position is: &#123;&#123; x &#125;&#125;, &#123;&#123; y &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">import</span> &#123; useMouse &#125; <span class="keyword">from</span> <span class="string">&#x27;./mouse.js&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> &#123; x, y &#125; = <span class="title function_">useMouse</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue3相对于Vue2的优化</title>
+    <url>/2023/10/10/Vue-Vue3%E7%9A%84%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="Vue3相对于Vue2的优化"><a href="#Vue3相对于Vue2的优化" class="headerlink" title="Vue3相对于Vue2的优化"></a>Vue3相对于Vue2的优化</h1><p>对于开发者影响最大的还是 Composition API，代码写法上更加灵活。</p>
+<h2 id="（1）项目架构优化"><a href="#（1）项目架构优化" class="headerlink" title="（1）项目架构优化"></a>（1）项目架构优化</h2><ul>
+<li><p>Monorepo</p>
+</li>
+<li><p>分包</p>
+</li>
+</ul>
+<h2 id="（2）类型检测更严格"><a href="#（2）类型检测更严格" class="headerlink" title="（2）类型检测更严格"></a>（2）类型检测更严格</h2><p>Vue3 使用了 <strong>TypeScript</strong>，Vue2 使用的是 Flow，Vue1 没有。</p>
+<h2 id="（3）性能优化"><a href="#（3）性能优化" class="headerlink" title="（3）性能优化"></a>（3）性能优化</h2><p><strong>tree-shaking 技术</strong></p>
+<p>编译时静态分析出未使用的模块。减小 Vue.js 包体积。</p>
+<p><strong>数据劫持</strong></p>
+<p><code>Object.defineProperty()</code>：会改变原数据</p>
+<p><code>Proxy</code>：不会改变原数据，代理处理器，可以检测数组</p>
+<p><strong>Block tree</strong></p>
+<p>vnode 与动态内容的数量相关，之前是与模板规模相关。</p>
+<p><strong>diff算法优化</strong></p>
+<h2 id="（4）语法优化"><a href="#（4）语法优化" class="headerlink" title="（4）语法优化"></a>（4）语法优化</h2><p>新增 <strong>Composition API</strong>，之前是 Options API</p>
+<ul>
+<li><p>便于逻辑聚合</p>
+</li>
+<li><p>取代 Mixins，逻辑复用</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue源码概述</title>
+    <url>/2023/10/04/Vue-%E6%BA%90%E7%A0%81%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h1 id="Vue源码概述"><a href="#Vue源码概述" class="headerlink" title="Vue源码概述"></a>Vue源码概述</h1><p>Vue 2.x 的源码就是利用了 Flow 做静态类型检查。</p>
+<h2 id="timerFunc"><a href="#timerFunc" class="headerlink" title="timerFunc"></a>timerFunc</h2><p>Vue 在构建时，会初始化一个 timerFunc 函数，该函数会把 flushCallbacks 函数放入异步队列中。</p>
+<p>flushCallbacks 函数负责清空在 Vue.nextTick 中定义的批量异步操作。</p>
+<p>nextTick 负责收集包装异步函数，添加到 callbacks 数组中，并且触发 timerFunc 函数。</p>
+<blockquote>
+<p>nextTick 就是把一个异步函数加入队列中，等同步方法执行完了立刻执行。</p>
+</blockquote>
+<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p>Vue 函数接收一个 options 参数，执行 <code>_init()</code> 函数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Vue</span> (options) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="title function_">_init</span>(options)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>初始化流程</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title function_">mergeOptions</span>()</span><br><span class="line"><span class="comment">// 生命周期：确定实例的父实例和根实例</span></span><br><span class="line"><span class="title function_">initLifecycle</span>(vm)</span><br><span class="line"><span class="comment">// 初始化实例上定义的自定义事件</span></span><br><span class="line"><span class="title function_">initEvents</span>(vm)</span><br><span class="line"><span class="comment">// 解析组件的插槽信息，得到 vm.$slot,</span></span><br><span class="line"><span class="comment">// 处理渲染函数（_render）,得到 vm.$createElement 方法，即 h 函数</span></span><br><span class="line"><span class="title function_">initRender</span>(vm)</span><br><span class="line"><span class="comment">// 调用 beforeCreate 钩子函数</span></span><br><span class="line"><span class="title function_">callHook</span>(vm, <span class="string">&#x27;beforeCreate&#x27;</span>)</span><br><span class="line"><span class="comment">// 初始化组件的 inject 配置项，得到 result[key] = val 形式的配置对象，然后对结果数据进行响应式处理，并代理每个 key 到 vm 实例</span></span><br><span class="line"><span class="title function_">initInjections</span>(vm) <span class="comment">// resolve injections before data/props</span></span><br><span class="line"><span class="comment">// 数据响应式核心，处理 props、methods、data、computed、watch</span></span><br><span class="line"><span class="title function_">initState</span>(vm)</span><br><span class="line"><span class="comment">// 解析组件配置项上的 provide 对象，将其挂载到 vm._provided 属性上</span></span><br><span class="line"><span class="title function_">initProvide</span>(vm) <span class="comment">// resolve provide after data/props</span></span><br><span class="line"><span class="comment">// 调用 created 钩子函数</span></span><br><span class="line"><span class="title function_">callHook</span>(vm, <span class="string">&#x27;created&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> (vm.<span class="property">$options</span>.<span class="property">el</span>) &#123;</span><br><span class="line">    <span class="comment">// 调用 $mount 方法，进入挂载阶段</span></span><br><span class="line">    vm.$mount(vm.<span class="property">$options</span>.<span class="property">el</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建之前的初始化"><a href="#创建之前的初始化" class="headerlink" title="创建之前的初始化"></a>创建之前的初始化</h3><ul>
+<li><p>合并options</p>
+</li>
+<li><p>生命周期，绑定父组件和根组件</p>
+</li>
+<li><p>绑定自定义事件：因为在初始化数据时可能触发</p>
+</li>
+<li><p>初始化插槽：因为在插槽中的可能用到响应式数据</p>
+</li>
+</ul>
+<h3 id="响应式数据的初始化"><a href="#响应式数据的初始化" class="headerlink" title="响应式数据的初始化"></a>响应式数据的初始化</h3><p>beforeCreate 和 created 之间主要是处理响应式数据和方法，流程</p>
+<ul>
+<li><p>初始化 inject</p>
+</li>
+<li><p><strong>绑定函数到组件</strong></p>
+</li>
+<li><p><strong>初始化 data</strong></p>
+</li>
+<li><p><strong>初始化 computed</strong></p>
+</li>
+<li><p><strong>初始化 watch</strong></p>
+</li>
+<li><p>初始化 provide</p>
+</li>
+</ul>
+<h3 id="实例挂载"><a href="#实例挂载" class="headerlink" title="实例挂载"></a>实例挂载</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">mountComponent</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="title function_">callHook</span>(vm, <span class="string">&#x27;beforeMount&#x27;</span>)</span><br><span class="line">    <span class="comment">// 执行 vm._render() 函数，得到 虚拟 DOM，并将 vnode 传递给 _update 方法，</span></span><br><span class="line">    <span class="comment">// 接下来就该到 patch 阶段了</span></span><br><span class="line">    updateComponent = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      vm.<span class="title function_">_update</span>(vm.<span class="title function_">_render</span>(), hydrating) </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 观察</span></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Watcher</span>(vm, updateComponent, noop, &#123;</span><br><span class="line">        before () &#123;</span><br><span class="line">          <span class="keyword">if</span> (vm.<span class="property">_isMounted</span> &amp;&amp; !vm.<span class="property">_isDestroyed</span>) &#123;</span><br><span class="line">            <span class="title function_">callHook</span>(vm, <span class="string">&#x27;beforeUpdate&#x27;</span>)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="literal">true</span> <span class="comment">/* isRenderWatcher */</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>updateComponent</code> 的调用会执行 <code>vm._update</code> 和 <code>vm._render</code></p>
+<p><code>Watcher</code> 在这里主要是初始化和数据变化时，执行回调函数。</p>
+<h2 id="把模版编译成render函数"><a href="#把模版编译成render函数" class="headerlink" title="把模版编译成render函数"></a>把模版编译成render函数</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ast = <span class="title function_">parse</span>(template.<span class="title function_">trim</span>(), options)</span><br><span class="line"><span class="comment">// 优化，遍历 AST，为每个节点做静态标记</span></span><br><span class="line"><span class="comment">// 标记每个节点是否为静态节点，然后进一步标记出静态根节点</span></span><br><span class="line"><span class="comment">// 这样在后续更新中就可以跳过这些静态节点了</span></span><br><span class="line"><span class="comment">// 标记静态根，用于生成渲染函数阶段，生成静态根节点的渲染函数</span></span><br><span class="line"><span class="keyword">if</span> (options.<span class="property">optimize</span> !== <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="title function_">optimize</span>(ast, options)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 从 AST 生成渲染函数，，将 ast 转换成可执行的 render 函数的字符串形式</span></span><br><span class="line"><span class="comment">// code = &#123;</span></span><br><span class="line"><span class="comment">//   render: `with(this)&#123;return $&#123;_c(tag, data, children, normalizationType)&#125;&#125;`,</span></span><br><span class="line"><span class="comment">//   staticRenderFns: [_c(tag, data, children, normalizationType), ...]</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"><span class="keyword">const</span> code = <span class="title function_">generate</span>(ast, options)</span><br><span class="line"><span class="keyword">return</span> &#123;</span><br><span class="line">    ast,</span><br><span class="line">    <span class="attr">render</span>: code.<span class="property">render</span>,</span><br><span class="line">    <span class="attr">staticRenderFns</span>: code.<span class="property">st</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>解析字符串，生成树：涉及正则表达式，借鉴 simplehtmlparser.js，生成对象树</p>
+</li>
+<li><p>优化</p>
+</li>
+<li><p>生成render代码</p>
+</li>
+</ul>
+<h2 id="响应式数据"><a href="#响应式数据" class="headerlink" title="响应式数据"></a>响应式数据</h2><p><code>Observer</code> 类会被附加到被观察的对象上，也就是说，每一个响应式对象上都会有一个 <code>__ob__</code>；然后对数据类型进行了一个判断；若是数组，则判断是否存在 <code>__proto__</code> 属性，因为要通过原型链覆盖数组的几个方法，</p>
+<p><code>defineReactive</code> 的作用就是利用 <code>Object.defineProperty</code> 对数据的读写进行劫持，给属性 <code>key</code> 添加 <code>getter</code> 和 <code>setter</code> ，用于依赖收集和通知更新。如果传进来的值依旧是一个对象，则递归调用 <code>observe</code> 方法，保证子属性都能变成响应式。</p>
+<p>一个 key 一个 dep，在 key 被调用时，dep 收集依赖，在 key 被重新赋值时，dep 通知所有的依赖更新。</p>
+<p>Dep 收集 Watcher，通知 Watcher 更新。</p>
+<p>一个组件可以有多个 Watcher（组件至少一个，还有计算属性）</p>
+<p>Watcher 与一个组件绑定，通知 Watcher 就是让组件重新渲染。</p>
+<p>创建 Watcher 对象的情况：</p>
+<ul>
+<li><p>创建组件时</p>
+</li>
+<li><p>创建计算属性时</p>
+</li>
+<li><p>手动调用 <code>$watcher</code></p>
+</li>
+</ul>
+<p>watcher 更新</p>
+<p>如果是渲染 <code>watcher</code> 则执行 <code>this.cb.call(this.vm, value, oldValue)</code>。渲染 <code>Wather</code> 的实例化是在挂载时 <code>mountComponent</code> 方法中执行的：实际就是实例化时传入的第二个参数 <code>updateComponent</code> 。</p>
+<h2 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h2><p>Vue 1.x Watcher 时DOM元素级别，数据变化时可以精确到特定元素。</p>
+<p>Vue 2.x 开始Watcher改为组件级，数据变化时通知组件更新，组件自己再通过diff算法确定更新具体的哪些元素。</p>
+<p>vm._render() </p>
+<p>createElement</p>
+<p>创建虚拟节点VNode</p>
+<p>Vue 的 <code>_update</code> 是实例上的一个私有方法，主要的作用就是把 VNode 渲染成真实的 DOM。</p>
+<p>内部会调用 patch 方法，精细化修改真实DOM</p>
+<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><p>对比算法，判断DOM节点是否可以复用。</p>
+<p>最终会生成真实DOM并进行挂载。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://juejin.cn/post/7004619171258449934/">Vue（v2.6.14）源码解毒（一）：准备工作 - 掘金 (juejin.cn)</a></p>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端缓存</title>
+    <url>/2023/01/10/%E5%89%8D%E7%AB%AF%E7%BC%93%E5%AD%98/</url>
+    <content><![CDATA[<h1 id="前端缓存"><a href="#前端缓存" class="headerlink" title="前端缓存"></a>前端缓存</h1><p>分为两种：</p>
+<ol>
+<li><p>浏览器缓存：cookie、localStore 等，存储少量信息</p>
+</li>
+<li><p>HTTP缓存：存储文件副本</p>
+</li>
+</ol>
+<h2 id="一、浏览器缓存"><a href="#一、浏览器缓存" class="headerlink" title="一、浏览器缓存"></a>一、浏览器缓存</h2><p>存储少量信息</p>
+<ul>
+<li><p>cookie</p>
+</li>
+<li><p>local store</p>
+</li>
+<li><p>sessionStorage</p>
+</li>
+</ul>
+<h2 id="二、HTTP缓存"><a href="#二、HTTP缓存" class="headerlink" title="二、HTTP缓存"></a>二、HTTP缓存</h2><p>针对静态资源的缓存，遵循 HTTP 缓存规则，通过响应头进行缓存。</p>
+<p>可分为两种缓存：</p>
+<ul>
+<li><p>强制缓存</p>
+</li>
+<li><p>协商缓存</p>
+</li>
+</ul>
+<blockquote>
+<p>浏览器中，Ajax 的缓存和 HTTP 的缓存基本是一样的，根据响应头自动进行处理。</p>
+</blockquote>
+<h3 id="强制缓存"><a href="#强制缓存" class="headerlink" title="强制缓存"></a>强制缓存</h3><p>客户端自己判断是否读取缓存，不向服务端发送请求</p>
+<h4 id="基于-Expires-实现（废弃）"><a href="#基于-Expires-实现（废弃）" class="headerlink" title="基于 Expires 实现（废弃）"></a>基于 Expires 实现（废弃）</h4><blockquote>
+<p>expire：期满，失效</p>
+</blockquote>
+<p>响应时，给文件设置一个失效期。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Expires: Tue, 03 Jul 2001 06:00:00 GMT</span><br></pre></td></tr></table></figure>
+
+<p>问题：过度依赖本地时间，如果本地时间与服务器不同步，就会出现资源无法被缓存或者资源永远被缓存的情况。</p>
+<h4 id="基于-Cache-control-实现"><a href="#基于-Cache-control-实现" class="headerlink" title="基于 Cache-control 实现"></a>基于 Cache-control 实现</h4><p>代替 Expires 方案，使用时长代替时间点。</p>
+<p>Cache-control 的可用属性：</p>
+<ul>
+<li><p><strong>max-age</strong>：浏览器缓存时长</p>
+</li>
+<li><p>s-maxage：代理服务器缓存时长</p>
+</li>
+<li><p>no-cache：不使用“强制缓存”，使用“协商缓存”</p>
+</li>
+<li><p>no-store：不使用任何缓存</p>
+</li>
+<li><p>private：私有缓存，资源不可以被代理服务器缓存，只能被浏览器缓存</p>
+</li>
+<li><p>public：公开缓存，资源可以被代理服务器缓存</p>
+</li>
+</ul>
+<p>s-maxage 属性必须和 public 属性一起使用，决定代理服务器的缓存</p>
+<p><strong>在一般的项目架构中 max-age 就够用</strong></p>
+<h3 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h3><p>给服务端发送请求，让服务端判断是否读取缓存。</p>
+<p>返回 HTTP 304，则表示缓存可用。</p>
+<h4 id="基于-last-modified-实现"><a href="#基于-last-modified-实现" class="headerlink" title="基于 last-modified 实现"></a>基于 last-modified 实现</h4><p>（1）第一次访问资源时，服务端读取文件的修改时间，给该资源的响应头赋值</p>
+<ul>
+<li><p>last-modified 字段赋值为文件修改时间</p>
+</li>
+<li><p>Cache-Control 字段值设置为 no-cache，跳过强制缓存</p>
+</li>
+</ul>
+<p>（2）当客户端接收到响应时，会记录该资源的修改时间，下一次访问时，赋给请求头的 If-Modified-Since 属性</p>
+<p>（3）服务端接收到请求时，读取请求头的修改时间和对应文件的修改时间进行比较，如果相等则返回 304，让客户端去读缓存，如果不相等则返回新的资源</p>
+<p>存在的问题：</p>
+<ul>
+<li><p>在文件内容本身不修改的情况下，依然有可能更新文件修改时间，导致缓存失效</p>
+</li>
+<li><p>文件修改时间记录的最小单位是秒，如果文件在极短时间内完成了修改（毫秒级），文件修改时间不会改变，导致客户端不能及时更新</p>
+</li>
+</ul>
+<h4 id="基于-ETag-实现"><a href="#基于-ETag-实现" class="headerlink" title="基于 ETag 实现"></a>基于 ETag 实现</h4><p>ETag 就是将原先比较时间戳的形式改成了比较文件指纹</p>
+<blockquote>
+<p>文件指纹：根据文件内容计算出的唯一哈希值</p>
+</blockquote>
+<p>（1）第一次访问资源时，服务端读取文件并计算出文件 hash 值，赋给响应头的 etag 属性</p>
+<p>（2）客户端之后访问该资源时，让请求头的 if-none-match 属性携带该文件的 hash 值</p>
+<p>（3）服务端读取请求头的 if-none-match 属性，然后计算度对应文件的hash值进行比对，如果相等，说明文件没有修改，返回 304 让客户端去读取缓存，否则返回新的文件</p>
+<p>Etag 的缺点：计算量大，影响服务器性能。</p>
+<h2 id="如何设置缓存"><a href="#如何设置缓存" class="headerlink" title="如何设置缓存"></a>如何设置缓存</h2><p>缓存是缓存在前端，但实际上代码是后端开发来写的，加相关响应头及其对应的校验逻辑即可。</p>
+<p>浏览器可以自动判断是否存在缓存，并根据响应头进行相应的缓存处理。</p>
+<h2 id="缓存方式的选择"><a href="#缓存方式的选择" class="headerlink" title="缓存方式的选择"></a>缓存方式的选择</h2><p>（1）有哈希值的文件设置为强制缓存，如 Vue 打包好的 css、js 文件，每次打包文件名会发生变换，每次更新后，客户端就会检测不到对应文件，从而重新去获取资源</p>
+<p>（2）没有哈希值的文件设置为协商缓存，如 index.html，让服务端检测</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>浏览器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浏览器多标签页通信</title>
+    <url>/2023/01/25/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%80%9A%E4%BF%A1/</url>
+    <content><![CDATA[<h1 id="浏览器多标签页通信"><a href="#浏览器多标签页通信" class="headerlink" title="浏览器多标签页通信"></a>浏览器多标签页通信</h1><p>浏览器标签页之间是无法直接通信的，需要找到一个中介，如浏览器存储、同一个服务器或其他共享方案。</p>
+<h2 id="基于浏览器存储的方案"><a href="#基于浏览器存储的方案" class="headerlink" title="基于浏览器存储的方案"></a>基于浏览器存储的方案</h2><ul>
+<li><p>localStorage</p>
+</li>
+<li><p>cookie</p>
+</li>
+<li><p>indexDB</p>
+</li>
+</ul>
+<h2 id="postMessage"><a href="#postMessage" class="headerlink" title="postMessage"></a>postMessage</h2><p>发送窗口消息。</p>
+<p>可以跨域。</p>
+<p>所有主流浏览器（包括IE8）都支持。</p>
+<p>安全问题（功能越强大，越容易出现安全问题）</p>
+<h2 id="广播频道（Broadcast-Channel）"><a href="#广播频道（Broadcast-Channel）" class="headerlink" title="广播频道（Broadcast Channel）"></a>广播频道（Broadcast Channel）</h2><p>同源页面、窗口</p>
+<p><a href="https://blog.csdn.net/rolinabc/article/details/131780602">跨项目实时通信——Broadcast Channel_橙程橙的博客-CSDN博客</a></p>
+<h2 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h2><p>运行于浏览器后台，不受页面刷新的影响，可以监听和截拦作用域范围内所有页面的 HTTP 请求。</p>
+<p><a href="https://mp.weixin.qq.com/s/3Ep5pJULvP7WHJvVJNDV-g">https://mp.weixin.qq.com/s/3Ep5pJULvP7WHJvVJNDV-g</a></p>
+<h2 id="Shared-Worker"><a href="#Shared-Worker" class="headerlink" title="Shared Worker"></a>Shared Worker</h2><p>共享线程，在该线程中进行数据缓存，即可共享数据。</p>
+<p><a href="https://www.jianshu.com/p/d72fda7b1e1b">vue:sharedWorker共享工作者线程的使用 - 简书</a></p>
+<h2 id="websocket"><a href="#websocket" class="headerlink" title="websocket"></a>websocket</h2><p>需要与服务器建立连接，成本高。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://cloud.tencent.com/developer/article/2313129">穿越标签页的通信魔法：揭秘跨标签页通信的神奇力量| 技术创作特训营第一期-腾讯云开发者社区-腾讯云</a></p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>浏览器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>问题汇总（uniapp）</title>
     <url>/2022/08/22/%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB-uniapp/</url>
     <content><![CDATA[<h1 id="问题汇总（uniapp）"><a href="#问题汇总（uniapp）" class="headerlink" title="问题汇总（uniapp）"></a>问题汇总（uniapp）</h1><h2 id="主包与分包"><a href="#主包与分包" class="headerlink" title="主包与分包"></a>主包与分包</h2><p>微信分包问题：主包相当于全局作用域，分包相当于局部作用域。分包可以访问主包。</p>

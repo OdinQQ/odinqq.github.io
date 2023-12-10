@@ -1,0 +1,496 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>QinのBlog - 我思我见</title><meta name="author" content="qintj"><meta name="copyright" content="qintj"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="QinのBlog">
+<meta property="og:url" content="https://odinqq.github.io/page/2/index.html">
+<meta property="og:site_name" content="QinのBlog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://odinqq.github.io/img/avatar.png">
+<meta property="article:author" content="qintj">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://odinqq.github.io/img/avatar.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://odinqq.github.io/page/2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'QinのBlog',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2023-12-10 13:07:30'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page fixed" id="page-header" style="background-image: url('/img/index_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="QinのBlog"><img class="site-icon" src="/favicon.ico"/><span class="site-name">QinのBlog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">QinのBlog</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/01/10/%E5%89%8D%E7%AB%AF%E7%BC%93%E5%AD%98/" title="前端缓存">前端缓存</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-09T16:00:00.000Z" title="发表于 2023-01-10 00:00:00">2023-01-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">前端缓存分为两种：
+
+浏览器缓存：cookie、localStore 等，存储少量信息
+
+HTTP缓存：存储文件副本
+
+
+一、浏览器缓存存储少量信息
+
+cookie
+
+local store
+
+sessionStorage
+
+
+二、HTTP缓存针对静态资源的缓存，遵循 HTTP 缓存规则，通过响应头进行缓存。
+可分为两种缓存：
+
+强制缓存
+
+协商缓存
+
+
+
+浏览器中，Ajax 的缓存和 HTTP 的缓存基本是一样的，根据响应头自动进行处理。
+
+强制缓存客户端自己判断是否读取缓存，不向服务端发送请求
+基于 Expires 实现（废弃）
+expire：期满，失效
+
+响应时，给文件设置一个失效期。
+1Expires: Tue, 03 Jul 2001 06:00:00 GMT
+
+问题：过度依赖本地时间，如果本地时间与服务器不同步，就会出现资源无法被缓存或者资源永远被缓存的情况。
+基于 Cache-control 实现代替 Expires 方案，使用时长代替时间点。
+Cache-control 的可用属性：
+
+max-age：浏览器缓存时长
+
+s-maxage：代理服务器缓存时长
+
+no-ca ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/01/07/JS%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" title="JavaScript异步编程">JavaScript异步编程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-06T16:00:00.000Z" title="发表于 2023-01-07 00:00:00">2023-01-07</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">JavaScript异步编程同步：按顺序执行代码，当前代码执行完毕才会执行后续。
+异步：执行到异步代码时，把异步代码打包成任务放入任务队列后，就继续执行后续代码，不会等待异步代码执行完毕。
+实现异步的四种方法：
+
+回调函数
+
+Promise：ES6
+
+Generator：ES6
+
+async&#x2F;await：ES7，终极方案
+
+
+（1）回调函数略
+（2）PromisePromise 是 ES6 加入的。
+1234567891011// 1. 创建Promise对象let promise = new Promise((resolve) =&gt; &#123;    let data = doSomething();    // 传回数据    resolve(data); &#125;);// 2. 通过promise.then()获取数据promise.then((data)=&gt;&#123;&#125;)
+
+（3）GeneratorGenerator 用于更方便的创建 iterator（迭代器）。
+Generator 相当于 ES6 的协程。
+
+协程：可暂停执行过程的函数 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/12/28/DOM%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6/" title="DOM交互事件">DOM交互事件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-27T16:00:00.000Z" title="发表于 2022-12-28 00:00:00">2022-12-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">DOM交互事件事件是浏览器或文档交互的瞬间，如点击事件，是 JS 与 HTML 交互的桥梁。
+事件流有两种：
+
+事件捕获：事件从根节点向下传递，最终到达具体节点。
+
+事件冒泡：事件从最底层的节点向父级节点传递。
+
+
+事件模型
+DOM0 级模型
+
+IE 事件模型
+
+DOM2 级模型
+
+
+DOM0 级模型又称“原始事件模型”，此时还没有事件流的概念。所有浏览器都支持。
+绑定事件
+（1）在 HTML 中绑定
+1&lt;input type=&quot;button&quot; onclick=&quot;fun&quot;/&gt;
+
+（2）通过 JS 绑定
+1234var btn = document.getElementById(&#x27;btn&#x27;);btn.onclick = fun;// 移除监听函数btn.onclick = null;
+
+IE 事件模型支持事件流。
+有两个过程：
+
+事件处理阶段（target phase）：事件到达目标节点后，触发事件监听
+
+事件冒泡阶段（bubbling phase）：目标节点处理完事件后，事件向上冒泡，检查上级节点有没有设置监听函数 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/12/17/JS%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE/" title="JavaScript作用域链">JavaScript作用域链</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-16T16:00:00.000Z" title="发表于 2022-12-17 00:00:00">2022-12-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">JavaScript作用域链编程语言中的作用域可分为：
+
+词法作用域：大多数
+
+动态作用域
+
+
+JS 中只支持词法作用域， this 机制某种程度上很像动态作用域。
+词法域所见即所得，易于理解。
+闭包是基于词法域书写代码时产生的自然结果。
+词法作用域书写位置决定作用域。
+欺骗词法：在运行时修改作用域。
+
+eval：运行时植入JS代码。
+
+with：运行时指定作用域。
+
+
+闭包是基于词法作用域
+作用域（scope）作用域指的是 变量 的作用域。作用是隔离变量，限制一个变量的影响范围。
+变量的作用域是在定义时就确定的，对代码进行静态分析就可以确定。
+
+词法作用域：定义在词法阶段的作用域，也叫做静态作用域。
+
+
+动态作用域：不关心定义，只关心调用，运行时确定，作用域链基于调用栈。
+
+ES5 作用域：
+
+全局作用域
+函数作用域：function
+块级作用域
+
+全局作用域
+在全局声明
+
+未声明直接使用
+
+
+函数作用域在函数内部声明的变量
+块级作用域隐形块级作用域
+
+with
+
+catch 子句
+
+
+ES6 开始正式支持：
+
+let
+
+const
+
+
+作用域链（Scope Chain）在 Java ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/12/17/JS%E8%AE%A1%E6%97%B6%E5%99%A8%E3%80%81%E8%8A%82%E6%B5%81%E3%80%81%E9%98%B2%E6%8A%96/" title="JavaScript计时器、防抖、节流">JavaScript计时器、防抖、节流</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-16T16:00:00.000Z" title="发表于 2022-12-17 00:00:00">2022-12-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">JavaScript计时器、防抖、节流计时器方法12345678// 设置计时器，间隔一段时间循环执行setInterval(function, millisecond)// 停止计时器clearInterval(timer)// 设置计时器，延时执行一次setTimeout()// 停止计时器clearTimeout()
+
+防抖与节流防抖（debounce）：防止短时间内多次触发事件，只触发最后一次。
+节流（throttle）：防止短时间内多次触发事件，但是间隔事件内，还是需要不断触发。
+通过“计时器”可以实现防抖与节流。
+防抖触发事件会导致重新计时，计时走完才会执行一次操作。
+会重置定时器
+示例：
+1234567891011let timer = null;window.onscroll = function() &#123;    if (timer !== null) &#123;        clearTimeout(timer)    &#125;    timer = setTimeout(()=&gt;&#123;        // 需要防抖的操作        c ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/12/16/JS%E5%87%BD%E6%95%B0/" title="JavaScript函数">JavaScript函数</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-15T16:00:00.000Z" title="发表于 2022-12-16 00:00:00">2022-12-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">JavaScript函数匿名函数匿名函数：函数声明时不指定函数名。
+匿名函数的用途：多用于封装私有变量，防止变量污染。
+匿名函数自运行
+123(function()&#123;&#125;)()
+
+包裹匿名函数的小括号把匿名函数变成了一个优先执行的表达式，表达式一定会返回结果，且结果为函数本身，再在后面加一个小括号，就等于调用函数。
+所有可以把“函数声明”变为表达式的运算符都可以让匿名函数自运行，如：
+1234// 使用 + 执行效率最高+function()&#123;&#125;()
+
+递归函数递归函数必须有结束条件，中止递归，向上返回。
+回调函数回调函数指的是函数的使用方式。
+把一个函数交给别人，在合适的时候再调用。
+这里面还涉及了 this 的指向问题。
+构造函数是对函数的特殊调用方式。
+对一个函数使用 new 关键字，返回值是一个对象。
+习惯：构造函数首字母大写。
+默认参数语法与 Python 类似。
+123function fun(形参=默认值, ...) &#123;&#125;
+
+闭包函数闭包函数：声明在一个函数中的函数。
+闭包的两要素：
+
+函数嵌套
+
+内层函数引用外层 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/12/14/JS%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="JavaScript数据类型">JavaScript数据类型</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-13T16:00:00.000Z" title="发表于 2022-12-14 00:00:00">2022-12-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">JavaScript数据类型原始&#x2F;基本数据类型（7种）：
+
+Number
+
+String
+
+Boolean
+
+Undefined：undefined
+
+Null：null
+
+Symbol（ES6）
+
+BigInt（ES10）
+
+
+引用数据类型（1个）：
+
+Object
+
+
+JS 中万物皆对象
+
+原始数据类型的数据直接存储在栈中，引用数据类型的数据存储在堆中，并把数据的起始地址存储在栈中。
+undefined如何得到安全的 undefined？
+JS 比较松散，可以定义名为 undefined 的变量，这就导致固有的 undefined 值发生变化。
+可以通过 void 获取安全的 undefined
+1void 0;
+
+BitIntBigInt值的定义：在一个整数字面量后面加 n 或使用构造函数。
+12const theBiggestInt = 9007199254740991n;const alsoHuge = BigInt(9007199254740991);
+
+类型检测
+typeof
+
+instanceof
+
+Object.prototype.toString.call ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/09/26/%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" title="问题汇总（微信小程序）">问题汇总（微信小程序）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-25T16:00:00.000Z" title="发表于 2022-09-26 00:00:00">2022-09-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a></span></div><div class="content">问题汇总（微信小程序）自定义指令小程序不支持 Vue.directive() 自定义指令
+微信webview字体闪烁问题123body &#123;    -webkit-text-size-adjust: 100% !important;&#125;
+
+iOS Date 问题iOS微信小程序 Date.now() 只能处理 “&#x2F;” 分隔的日期。
+参考：https://blog.csdn.net/qq_40745143/article/details/108142314
+微信小程序多层 v-for 问题当布局中存在多层 v-for 嵌套时，里层的点击事件传值会发生错乱。
+2种解决方法：
+
+将里层的 v-for 封装成组件
+使用 data- 自定义特性传递参数
+
+自定义特性
+1234567&lt;view    v-for=&quot;(item, index) in list&quot;    :key=&quot;item.id&quot;    :data-params=&quot;item&quot;    @click=&quot;click&quot;&gt;&lt ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/08/22/%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB-uniapp/" title="问题汇总（uniapp）">问题汇总（uniapp）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-08-21T16:00:00.000Z" title="发表于 2022-08-22 00:00:00">2022-08-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/uni-app/">uni-app</a></span></div><div class="content">问题汇总（uniapp）主包与分包微信分包问题：主包相当于全局作用域，分包相当于局部作用域。分包可以访问主包。
+启动页uni-app 会将 pages.json 配置项中的第一个页面，作为当前工程的首页（启动页）。
+uniapp 打包问题打包 H5 时，最终项目包括所有内容。本地网页及相关资源（js、css等文件）必须放在 uni-app 项目的 /hybrid/html 文件夹下。
+打包小程序时，只包含特定内容。
+ref 问题uni-app 的 ref 属性不能用在内置组件上面，只能用在自定义组件上面。
+toast 字数uni.showToast() 有图标时，最多显示7个字符；没有图标时，可以显示更多。
+webview 导航栏问题小程序端 web-view 组件一定有原生导航栏，下面一定是全屏的 web-view 组件，navigationStyle: custom 对 web-view 组件无效。
+uniapp兼容ipad平板配置_uniapp开发平板rpx适配_搬砖的前端的博客-CSDN博客
+uni-popup 滚动穿透问题h5 平台会自动禁止滚动穿透。
+微信小程序、App 平 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/08/20/%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB-%E5%89%8D%E7%AB%AF/" title="问题汇总（前端）">问题汇总（前端）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-08-19T16:00:00.000Z" title="发表于 2022-08-20 00:00:00">2022-08-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">问题汇总（前端）JavaScript Number 的范围问题后端返回了一个 19 位的数字，超过了 16 位，前端拿到的数据，自动把超出部分转成 0？
+前端：JavaScript 中的数值类型 Number 是一个双精度浮点数（double），它可以表示的最大安全范围是正负 9007199254740991，也就是 2 的 53 次方减一，任何超出安全范围的数字都可能会失去精度。
+后端：Java 中的 Long 范围会大于 JavaScript 中的 Number 范围
+Windows字体缩放前端如何解决pc端屏幕显示设置缩放比例对页面布局的影响？_beichen3997的博客-CSDN博客
+@import问题css 本身也有 @import 语法，scss 为了区别 css 和 scss 的 import，就加了一条设定——@import url()写法的一律当做 css 的 import 处理，引入  scss 文件，使用 @import &quot;&quot;。
+前端部署前端项目部署的服务器，如 nginx、apache等
+JS 中数组使用字符串作为索引值_js数组怎么把索引 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">qintj</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/OdinQQ"><i class="fab fa-github"></i><span>GitHub</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">斯是陋室，惟吾德馨。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/01/Vue-Vue3Hooks/" title="Vue3 Hooks">Vue3 Hooks</a><time datetime="2023-11-30T16:00:00.000Z" title="发表于 2023-12-01 00:00:00">2023-12-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/Vue-Vue3%E7%9A%84%E4%BC%98%E5%8C%96/" title="Vue3相对于Vue2的优化">Vue3相对于Vue2的优化</a><time datetime="2023-10-09T16:00:00.000Z" title="发表于 2023-10-10 00:00:00">2023-10-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/04/Vue-%E6%BA%90%E7%A0%81%E6%A6%82%E8%BF%B0/" title="Vue源码概述">Vue源码概述</a><time datetime="2023-10-03T16:00:00.000Z" title="发表于 2023-10-04 00:00:00">2023-10-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/08/25/Spring%E7%B3%BB%E5%88%97%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3/" title="SpringBoot常用注解">SpringBoot常用注解</a><time datetime="2023-08-24T16:00:00.000Z" title="发表于 2023-08-25 00:00:00">2023-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/01/Node-Buffer/" title="Node.js Buffer">Node.js Buffer</a><time datetime="2023-04-30T16:00:00.000Z" title="发表于 2023-05-01 00:00:00">2023-05-01</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Java/"><span class="card-category-list-name">Java</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Node-js/"><span class="card-category-list-name">Node.js</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Vue/"><span class="card-category-list-name">Vue</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/uni-app/"><span class="card-category-list-name">uni-app</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/"><span class="card-category-list-name">前端</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/"><span class="card-category-list-name">微信小程序</span><span class="card-category-list-count">1</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/SpringBoot/" style="font-size: 1.1em; color: #999">SpringBoot</a> <a href="/tags/Java/" style="font-size: 1.18em; color: #999ca1">Java</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 1.5em; color: #99a9bf">前端</a> <a href="/tags/Node-js/" style="font-size: 1.34em; color: #99a3b0">Node.js</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 1.1em; color: #999">微信小程序</a> <a href="/tags/JavaScript/" style="font-size: 1.42em; color: #99a6b7">JavaScript</a> <a href="/tags/%E5%90%8E%E7%AB%AF/" style="font-size: 1.18em; color: #999ca1">后端</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 1.26em; color: #999fa8">浏览器</a> <a href="/tags/uni-app/" style="font-size: 1.1em; color: #999">uni-app</a> <a href="/tags/Vue/" style="font-size: 1.26em; color: #999fa8">Vue</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">十二月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">十月 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/08/"><span class="card-archive-list-date">八月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/05/"><span class="card-archive-list-date">五月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/04/"><span class="card-archive-list-date">四月 2023</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">5</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">21</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-12-10T05:07:29.970Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By qintj</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: (str) => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: (subtitleType) => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        getScript('https://cdn.jsdelivr.net/npm/typed.js/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  }
+}
+</script><script>function subtitleType () {
+  if (true) {
+    typedJSFn.init(["有朋自远方来，不亦乐乎？"])
+  } else {
+    document.getElementById("subtitle").textContent = "有朋自远方来，不亦乐乎？"
+  }
+}
+typedJSFn.run(subtitleType)</script></div><div class="aplayer no-destroy" data-id="8920954215" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrc-type="0"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
