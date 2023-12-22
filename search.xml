@@ -913,6 +913,68 @@
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot常用注解</title>
+    <url>/2023/08/25/Spring%E7%B3%BB%E5%88%97%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="SpringBoot常用注解"><a href="#SpringBoot常用注解" class="headerlink" title="SpringBoot常用注解"></a>SpringBoot常用注解</h1><h2 id="组件相关"><a href="#组件相关" class="headerlink" title="组件相关"></a>组件相关</h2><p><code>@Controller</code> 和 <code>@Service</code> 都派生于 <code>@Component</code>。</p>
+<p>SpringBoot 中的组件扫描功能会识别到这些注解。</p>
+<h3 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h3><p>该注解是万能的注解</p>
+<p>通常加在配置类上</p>
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="@Controller"></a>@Controller</h3><p>修饰控制器层组件</p>
+<p>接收请求，对请求进行分发</p>
+<p>可以跳转到模板页面。</p>
+<p>而 <code>@RestController</code> 只能返回实体对象，不能跳转到模板页面。</p>
+<h3 id="Service"><a href="#Service" class="headerlink" title="@Service"></a>@Service</h3><p>修饰业务层组件</p>
+<h3 id="Repository"><a href="#Repository" class="headerlink" title="@Repository"></a>@Repository</h3><p>用于修饰 dao 层组件</p>
+<p>专注于系统数据的处理。</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><h3 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h3><blockquote>
+<p>auto wired：自动联线</p>
+</blockquote>
+<p>根据对象的 <strong>类型</strong> 自动注入依赖对象</p>
+<h3 id="Resource"><a href="#Resource" class="headerlink" title="@Resource"></a>@Resource</h3><p>默认会根据对象的 <strong>名称</strong> 自动注入依赖对象</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Resource(name = &quot;umsAdminServiceImpl&quot;)</span></span><br><span class="line"><span class="keyword">private</span> UmsAdminService adminService;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Qualifier"><a href="#Qualifier" class="headerlink" title="@Qualifier"></a>@Qualifier</h3><p>当同一个对象有多个实例可以注入时</p>
+<h2 id="实例与生命周期"><a href="#实例与生命周期" class="headerlink" title="实例与生命周期"></a>实例与生命周期</h2><h3 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h3><p>用于修饰方法，标识该方法会创建一个 Bean 实例，并交给 Spring 容器来管理。</p>
+<h3 id="Scope"><a href="#Scope" class="headerlink" title="@Scope"></a>@Scope</h3><p>用于声明一个 Spring Bean 实例的作用域</p>
+<h2 id="SpringMVC-相关"><a href="#SpringMVC-相关" class="headerlink" title="SpringMVC 相关"></a>SpringMVC 相关</h2><h3 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="@RequestMapping"></a>@RequestMapping</h3><p>用于将 Web 请求路径映射到处理类的方法上。</p>
+<p>当用于类上时，可以统一类中所有方法的路由路径。</p>
+<h3 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h3><p>该注解常用来处理 <code>content-type</code> 不是默认的 <code>application/x-www-form-urlcoded</code> 编码的内容。</p>
+<p>一般是用来处理 <code>application/json</code> 类型</p>
+<h3 id="ResponseBody"><a href="#ResponseBody" class="headerlink" title="@ResponseBody"></a>@ResponseBody</h3><p>将控制器方法返回的对象通过适当的转换器转换为指定的格式之后，写入到响应对象的 body 中，通常用来返回 JSON 或 XML 数据。</p>
+<h3 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h3><p>用于接收请求参数</p>
+<ul>
+<li><p>GET路径参数</p>
+</li>
+<li><p>表单参数</p>
+</li>
+<li><p>文件上传请求的部分参数</p>
+</li>
+</ul>
+<h3 id="RequestPart"><a href="#RequestPart" class="headerlink" title="@RequestPart"></a>@RequestPart</h3><p>用于接收文件上传中的文件参数</p>
+<h2 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h2><h3 id="Configuration"><a href="#Configuration" class="headerlink" title="@Configuration"></a>@Configuration</h3><p>用于声明一个 Java 形式的配置类，SpringBoot 推荐使用 Java 配置，在该类中声明配置将被 SpringBoot 的组件扫描功能扫描到。</p>
+<h3 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h3><p>用于表示 SpringBoot 应用中的启动类</p>
+<h3 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h3><p>用于把配置文件中配置好的属性注入到类中。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtTokenUtil</span> &#123;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.secret&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String secret;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.expiration&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long expiration;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.tokenHead&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String tokenHead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ConfigurationProperties"><a href="#ConfigurationProperties" class="headerlink" title="@ConfigurationProperties"></a>@ConfigurationProperties</h3><p>用于批量注入外部配置</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;secure.ignored&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IgnoreUrlsConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="AOP相关"><a href="#AOP相关" class="headerlink" title="AOP相关"></a>AOP相关</h2><p>@Aspect</p>
+<p>@Before</p>
+<p>@After</p>
+<h2 id="测试相关"><a href="#测试相关" class="headerlink" title="测试相关"></a>测试相关</h2><p>@SpringBootTest</p>
+<p>@Test</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>SpringBoot</tag>
+        <tag>后端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Node.js网络编程</title>
     <url>/2023/04/02/Node-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="Node-js网络编程"><a href="#Node-js网络编程" class="headerlink" title="Node.js网络编程"></a>Node.js网络编程</h1><p>在Web领域，大多数编程语言需要专门的Web服务器容器，如ASP需要IIS服务器，Java需要Tomcat服务器，PHP需要Apache服务器。Node则不需要额外的容器。</p>
@@ -1127,65 +1189,38 @@
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot常用注解</title>
-    <url>/2023/08/25/Spring%E7%B3%BB%E5%88%97%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<h1 id="SpringBoot常用注解"><a href="#SpringBoot常用注解" class="headerlink" title="SpringBoot常用注解"></a>SpringBoot常用注解</h1><h2 id="组件相关"><a href="#组件相关" class="headerlink" title="组件相关"></a>组件相关</h2><p><code>@Controller</code> 和 <code>@Service</code> 都派生于 <code>@Component</code>。</p>
-<p>SpringBoot 中的组件扫描功能会识别到这些注解。</p>
-<h3 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h3><p>该注解是万能的注解</p>
-<p>通常加在配置类上</p>
-<h3 id="Controller"><a href="#Controller" class="headerlink" title="@Controller"></a>@Controller</h3><p>修饰控制器层组件</p>
-<p>接收请求，对请求进行分发</p>
-<p>可以跳转到模板页面。</p>
-<p>而 <code>@RestController</code> 只能返回实体对象，不能跳转到模板页面。</p>
-<h3 id="Service"><a href="#Service" class="headerlink" title="@Service"></a>@Service</h3><p>修饰业务层组件</p>
-<h3 id="Repository"><a href="#Repository" class="headerlink" title="@Repository"></a>@Repository</h3><p>用于修饰 dao 层组件</p>
-<p>专注于系统数据的处理。</p>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><h3 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h3><blockquote>
-<p>auto wired：自动联线</p>
-</blockquote>
-<p>根据对象的 <strong>类型</strong> 自动注入依赖对象</p>
-<h3 id="Resource"><a href="#Resource" class="headerlink" title="@Resource"></a>@Resource</h3><p>默认会根据对象的 <strong>名称</strong> 自动注入依赖对象</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Resource(name = &quot;umsAdminServiceImpl&quot;)</span></span><br><span class="line"><span class="keyword">private</span> UmsAdminService adminService;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Qualifier"><a href="#Qualifier" class="headerlink" title="@Qualifier"></a>@Qualifier</h3><p>当同一个对象有多个实例可以注入时</p>
-<h2 id="实例与生命周期"><a href="#实例与生命周期" class="headerlink" title="实例与生命周期"></a>实例与生命周期</h2><h3 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h3><p>用于修饰方法，标识该方法会创建一个 Bean 实例，并交给 Spring 容器来管理。</p>
-<h3 id="Scope"><a href="#Scope" class="headerlink" title="@Scope"></a>@Scope</h3><p>用于声明一个 Spring Bean 实例的作用域</p>
-<h2 id="SpringMVC-相关"><a href="#SpringMVC-相关" class="headerlink" title="SpringMVC 相关"></a>SpringMVC 相关</h2><h3 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="@RequestMapping"></a>@RequestMapping</h3><p>用于将 Web 请求路径映射到处理类的方法上。</p>
-<p>当用于类上时，可以统一类中所有方法的路由路径。</p>
-<h3 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h3><p>该注解常用来处理 <code>content-type</code> 不是默认的 <code>application/x-www-form-urlcoded</code> 编码的内容。</p>
-<p>一般是用来处理 <code>application/json</code> 类型</p>
-<h3 id="ResponseBody"><a href="#ResponseBody" class="headerlink" title="@ResponseBody"></a>@ResponseBody</h3><p>将控制器方法返回的对象通过适当的转换器转换为指定的格式之后，写入到响应对象的 body 中，通常用来返回 JSON 或 XML 数据。</p>
-<h3 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h3><p>用于接收请求参数</p>
-<ul>
-<li><p>GET路径参数</p>
+    <title>Vue3相对于Vue2的优化</title>
+    <url>/2023/10/10/Vue-Vue3%E7%9A%84%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="Vue3相对于Vue2的优化"><a href="#Vue3相对于Vue2的优化" class="headerlink" title="Vue3相对于Vue2的优化"></a>Vue3相对于Vue2的优化</h1><p>对于开发者影响最大的还是 Composition API，代码写法上更加灵活。</p>
+<h2 id="（1）项目架构优化"><a href="#（1）项目架构优化" class="headerlink" title="（1）项目架构优化"></a>（1）项目架构优化</h2><ul>
+<li><p>Monorepo</p>
 </li>
-<li><p>表单参数</p>
-</li>
-<li><p>文件上传请求的部分参数</p>
+<li><p>分包</p>
 </li>
 </ul>
-<h3 id="RequestPart"><a href="#RequestPart" class="headerlink" title="@RequestPart"></a>@RequestPart</h3><p>用于接收文件上传中的文件参数</p>
-<h2 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h2><h3 id="Configuration"><a href="#Configuration" class="headerlink" title="@Configuration"></a>@Configuration</h3><p>用于声明一个 Java 形式的配置类，SpringBoot 推荐使用 Java 配置，在该类中声明配置将被 SpringBoot 的组件扫描功能扫描到。</p>
-<h3 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h3><p>用于表示 SpringBoot 应用中的启动类</p>
-<h3 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h3><p>用于把配置文件中配置好的属性注入到类中。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtTokenUtil</span> &#123;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.secret&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String secret;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.expiration&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long expiration;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.tokenHead&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String tokenHead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="ConfigurationProperties"><a href="#ConfigurationProperties" class="headerlink" title="@ConfigurationProperties"></a>@ConfigurationProperties</h3><p>用于批量注入外部配置</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;secure.ignored&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IgnoreUrlsConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="AOP相关"><a href="#AOP相关" class="headerlink" title="AOP相关"></a>AOP相关</h2><p>@Aspect</p>
-<p>@Before</p>
-<p>@After</p>
-<h2 id="测试相关"><a href="#测试相关" class="headerlink" title="测试相关"></a>测试相关</h2><p>@SpringBootTest</p>
-<p>@Test</p>
+<h2 id="（2）类型检测更严格"><a href="#（2）类型检测更严格" class="headerlink" title="（2）类型检测更严格"></a>（2）类型检测更严格</h2><p>Vue3 使用了 <strong>TypeScript</strong>，Vue2 使用的是 Flow，Vue1 没有。</p>
+<h2 id="（3）性能优化"><a href="#（3）性能优化" class="headerlink" title="（3）性能优化"></a>（3）性能优化</h2><p><strong>tree-shaking 技术</strong></p>
+<p>编译时静态分析出未使用的模块。减小 Vue.js 包体积。</p>
+<p><strong>数据劫持</strong></p>
+<p><code>Object.defineProperty()</code>：会改变原数据</p>
+<p><code>Proxy</code>：不会改变原数据，代理处理器，可以检测数组</p>
+<p><strong>Block tree</strong></p>
+<p>vnode 与动态内容的数量相关，之前是与模板规模相关。</p>
+<p><strong>diff算法优化</strong></p>
+<h2 id="（4）语法优化"><a href="#（4）语法优化" class="headerlink" title="（4）语法优化"></a>（4）语法优化</h2><p>新增 <strong>Composition API</strong>，之前是 Options API</p>
+<ul>
+<li><p>便于逻辑聚合</p>
+</li>
+<li><p>取代 Mixins，逻辑复用</p>
+</li>
+</ul>
 ]]></content>
       <categories>
-        <category>后端</category>
+        <category>Vue</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>后端</tag>
-        <tag>SpringBoot</tag>
+        <tag>前端</tag>
+        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
@@ -1218,41 +1253,6 @@
 
 <p>在组件中使用</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    Mouse position is: &#123;&#123; x &#125;&#125;, &#123;&#123; y &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">import</span> &#123; useMouse &#125; <span class="keyword">from</span> <span class="string">&#x27;./mouse.js&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> &#123; x, y &#125; = <span class="title function_">useMouse</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Vue</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue3相对于Vue2的优化</title>
-    <url>/2023/10/10/Vue-Vue3%E7%9A%84%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<h1 id="Vue3相对于Vue2的优化"><a href="#Vue3相对于Vue2的优化" class="headerlink" title="Vue3相对于Vue2的优化"></a>Vue3相对于Vue2的优化</h1><p>对于开发者影响最大的还是 Composition API，代码写法上更加灵活。</p>
-<h2 id="（1）项目架构优化"><a href="#（1）项目架构优化" class="headerlink" title="（1）项目架构优化"></a>（1）项目架构优化</h2><ul>
-<li><p>Monorepo</p>
-</li>
-<li><p>分包</p>
-</li>
-</ul>
-<h2 id="（2）类型检测更严格"><a href="#（2）类型检测更严格" class="headerlink" title="（2）类型检测更严格"></a>（2）类型检测更严格</h2><p>Vue3 使用了 <strong>TypeScript</strong>，Vue2 使用的是 Flow，Vue1 没有。</p>
-<h2 id="（3）性能优化"><a href="#（3）性能优化" class="headerlink" title="（3）性能优化"></a>（3）性能优化</h2><p><strong>tree-shaking 技术</strong></p>
-<p>编译时静态分析出未使用的模块。减小 Vue.js 包体积。</p>
-<p><strong>数据劫持</strong></p>
-<p><code>Object.defineProperty()</code>：会改变原数据</p>
-<p><code>Proxy</code>：不会改变原数据，代理处理器，可以检测数组</p>
-<p><strong>Block tree</strong></p>
-<p>vnode 与动态内容的数量相关，之前是与模板规模相关。</p>
-<p><strong>diff算法优化</strong></p>
-<h2 id="（4）语法优化"><a href="#（4）语法优化" class="headerlink" title="（4）语法优化"></a>（4）语法优化</h2><p>新增 <strong>Composition API</strong>，之前是 Options API</p>
-<ul>
-<li><p>便于逻辑聚合</p>
-</li>
-<li><p>取代 Mixins，逻辑复用</p>
-</li>
-</ul>
 ]]></content>
       <categories>
         <category>Vue</category>
